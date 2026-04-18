@@ -41,6 +41,7 @@ class SolicitacoesAppPro:
         self.df_filtrado = None
         self.filtro_data_inicio = None
         self.filtro_data_fim = None
+        self.progress_bar = None
         
         self.criar_interface()
         
@@ -318,6 +319,16 @@ class SolicitacoesAppPro:
             anchor='w'
         )
         self.info_label.pack(side=tk.LEFT, padx=15, pady=8)
+        
+        # Progress bar (inicialmente oculta)
+        self.progress_bar = ctk.CTkProgressBar(
+            info_frame,
+            width=200,
+            height=8,
+            corner_radius=4,
+            fg_color='#ecf0f1',
+            progress_color='#3498db'
+        )
         
         # Badge de filtro ativo
         self.filtro_badge = tk.Label(
@@ -709,19 +720,25 @@ class SolicitacoesAppPro:
             messagebox.showwarning("Aviso", "Por favor, selecione um arquivo!")
             return
         
-        # Mostrar loading state
+        # Mostrar loading state com progress bar
         self.info_label.config(
             text="⏳ Carregando dados...",
             fg='#e67e22'
         )
+        self.progress_bar.set(0)
+        self.progress_bar.pack(side=tk.LEFT, padx=10)
         self.root.update()
         
         try:
             df = pd.read_excel(arquivo, sheet_name='Relatório de Controle de entr')
+            self.progress_bar.set(0.2)
+            self.root.update()
             
             # Excluir apenas grupos (df_original = base para Dashboard/Análise/Resumo)
             grupos_excluir = [4003, 4037]
             df_base = df[~df['Grupo'].isin(grupos_excluir)]
+            self.progress_bar.set(0.4)
+            self.root.update()
             
             # Mapeamento para aba Dados e Dashboard
             colunas_mapeamento = {
@@ -783,15 +800,24 @@ class SolicitacoesAppPro:
             self.df_status_filtrado = df_status_base.copy()
             
             # Atualizar tabela da aba Dados (COM filtro de status)
+            self.progress_bar.set(0.6)
+            self.root.update()
             self.atualizar_tabela(df_dados)
             
             # Atualizar aba Status de Atendimento
             self.atualizar_tabela_status(self.df_status_filtrado)
             
             # Atualizar Dashboard/Análise/Resumo (SEM filtro de status - usa df_filtrado)
+            self.progress_bar.set(0.8)
+            self.root.update()
             self.atualizar_dashboard()
             self.atualizar_analise()
             self.atualizar_resumo()
+            
+            # Finalizar progress bar
+            self.progress_bar.set(1.0)
+            self.root.update()
+            self.root.after(500, self.progress_bar.pack_forget)  # Esconder após 500ms
             
             messagebox.showinfo(
                 "Sucesso",
@@ -801,8 +827,10 @@ class SolicitacoesAppPro:
             )
             
         except FileNotFoundError:
+            self.progress_bar.pack_forget()
             messagebox.showerror("Erro", f"Arquivo '{arquivo}' não encontrado!")
         except Exception as e:
+            self.progress_bar.pack_forget()
             messagebox.showerror("Erro", f"Erro ao carregar dados:\n{str(e)}")
     
     def atualizar_tabela(self, df):
