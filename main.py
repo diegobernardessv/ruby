@@ -51,7 +51,7 @@ class SolicitacoesAppPro:
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
         # ========== CABEÇALHO ==========
-        header_frame = tk.Frame(main_frame, bg='#2c3e50', height=60)
+        header_frame = tk.Frame(main_frame, bg='#2c3e50', height=70)
         header_frame.pack(fill=tk.X, pady=(0, 10))
         header_frame.pack_propagate(False)
         
@@ -63,7 +63,7 @@ class SolicitacoesAppPro:
         title_label = tk.Label(
             header_content,
             text="⚡ Zeus",
-            font=('Quicksand', 24, 'bold'),
+            font=('Quicksand', 28, 'bold'),
             bg='#2c3e50',
             fg='#FFD700'  # Dourado
         )
@@ -83,7 +83,7 @@ class SolicitacoesAppPro:
         subtitle_label = tk.Label(
             header_content,
             text='Sistema Elizeus de Controle de Solicitações',
-            font=('Quicksand', 12, 'bold'),
+            font=('Quicksand', 14, 'bold'),
             bg='#2c3e50',
             fg='#ecf0f1'  # Branco suave
         )
@@ -344,7 +344,7 @@ class SolicitacoesAppPro:
         title_frame = ctk.CTkFrame(
             self.aba_dados,
             corner_radius=10,
-            height=50,
+            height=60,
             fg_color='#2c3e50'
         )
         title_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
@@ -353,7 +353,7 @@ class SolicitacoesAppPro:
         tk.Label(
             title_frame,
             text="📋 Solicitações Pendentes",
-            font=('Quicksand', 16, 'bold'),
+            font=('Quicksand', 18, 'bold'),
             bg='#2c3e50',
             fg='#FFD700'
         ).pack(expand=True)
@@ -503,7 +503,7 @@ class SolicitacoesAppPro:
         title_frame = ctk.CTkFrame(
             self.aba_status,
             corner_radius=10,
-            height=50,
+            height=60,
             fg_color='#2c3e50'
         )
         title_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
@@ -512,7 +512,7 @@ class SolicitacoesAppPro:
         tk.Label(
             title_frame,
             text="✅ Controle de Atendimento das Solicitações",
-            font=('Quicksand', 16, 'bold'),
+            font=('Quicksand', 18, 'bold'),
             bg='#2c3e50',
             fg='#FFD700'
         ).pack(expand=True)
