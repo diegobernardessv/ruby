@@ -834,7 +834,12 @@ class SolicitacoesAppPro:
         arquivo = self.arquivo_entry.get()
         
         if not arquivo:
-            messagebox.showwarning("Aviso", "Por favor, selecione um arquivo!")
+            Toast.show(
+                self.root,
+                "Selecione um arquivo Excel primeiro",
+                tipo='warning',
+                duration=3000
+            )
             return
         
         # Salvar último arquivo usado
@@ -981,10 +986,53 @@ class SolicitacoesAppPro:
             
         except FileNotFoundError:
             self.progress_bar.pack_forget()
-            messagebox.showerror("Erro", f"Arquivo '{arquivo}' não encontrado!")
+            self.info_label.config(text="❌ Arquivo não encontrado", fg='#e74c3c')
+            Toast.show(
+                self.root,
+                f"Arquivo não encontrado: {os.path.basename(arquivo)}",
+                tipo='error',
+                duration=4000
+            )
+        except PermissionError:
+            self.progress_bar.pack_forget()
+            self.info_label.config(text="❌ Sem permissão para ler o arquivo", fg='#e74c3c')
+            Toast.show(
+                self.root,
+                "Feche o arquivo Excel e tente novamente",
+                tipo='warning',
+                duration=4000
+            )
+        except pd.errors.ParserError:
+            self.progress_bar.pack_forget()
+            self.info_label.config(text="❌ Erro ao ler Excel", fg='#e74c3c')
+            Toast.show(
+                self.root,
+                "Formato do arquivo Excel inválido",
+                tipo='error',
+                duration=4000
+            )
+        except KeyError as e:
+            self.progress_bar.pack_forget()
+            self.info_label.config(text="❌ Coluna não encontrada", fg='#e74c3c')
+            Toast.show(
+                self.root,
+                f"Coluna esperada não encontrada: {str(e)}",
+                tipo='error',
+                duration=4000
+            )
         except Exception as e:
             self.progress_bar.pack_forget()
-            messagebox.showerror("Erro", f"Erro ao carregar dados:\n{str(e)}")
+            self.info_label.config(text="❌ Erro ao carregar dados", fg='#e74c3c')
+            error_msg = str(e)
+            if len(error_msg) > 100:
+                error_msg = error_msg[:100] + "..."
+            Toast.show(
+                self.root,
+                f"Erro: {error_msg}",
+                tipo='error',
+                duration=5000
+            )
+            print(f"Erro detalhado: {e}")  # Log completo no console
     
     def atualizar_tabela(self, df):
         self.tree.delete(*self.tree.get_children())
@@ -1076,7 +1124,12 @@ class SolicitacoesAppPro:
     
     def aplicar_filtro_data(self):
         if self.df_original is None:
-            messagebox.showwarning("Aviso", "Carregue os dados primeiro!")
+            Toast.show(
+                self.root,
+                "Carregue os dados primeiro",
+                tipo='warning',
+                duration=3000
+            )
             return
         
         try:
@@ -1087,7 +1140,12 @@ class SolicitacoesAppPro:
             data_fim_pd = pd.Timestamp(data_fim)
             
             if data_inicio_pd > data_fim_pd:
-                messagebox.showwarning("Aviso", "A data inicial não pode ser maior que a data final!")
+                Toast.show(
+                    self.root,
+                    "Data inicial não pode ser maior que a final",
+                    tipo='warning',
+                    duration=3000
+                )
                 return
             
             # Guardar datas do filtro
@@ -1142,12 +1200,30 @@ class SolicitacoesAppPro:
                 duration=3000
             )
             
+        except ValueError as e:
+            Toast.show(
+                self.root,
+                "Data inválida selecionada",
+                tipo='warning',
+                duration=3000
+            )
         except Exception as e:
-            messagebox.showerror("Erro", f"Erro ao aplicar filtro:\n{str(e)}")
+            Toast.show(
+                self.root,
+                f"Erro ao aplicar filtro: {str(e)[:80]}",
+                tipo='error',
+                duration=4000
+            )
+            print(f"Erro detalhado ao filtrar: {e}")
     
     def limpar_filtro(self):
         if self.df_original is None:
-            messagebox.showwarning("Aviso", "Carregue os dados primeiro!")
+            Toast.show(
+                self.root,
+                "Carregue os dados primeiro",
+                tipo='warning',
+                duration=3000
+            )
             return
         
         # Limpar datas do filtro
@@ -1665,7 +1741,12 @@ DBSolutions Lab - © 2026
     def exportar_status_excel(self):
         """Exportar dados da aba Status de Atendimento para Excel"""
         if not hasattr(self, 'df_status_filtrado') or self.df_status_filtrado is None or self.df_status_filtrado.empty:
-            messagebox.showwarning("Aviso", "Não há dados para exportar!")
+            Toast.show(
+                self.root,
+                "Não há dados para exportar",
+                tipo='warning',
+                duration=3000
+            )
             return
         
         filename = filedialog.asksaveasfilename(
@@ -1683,13 +1764,31 @@ DBSolutions Lab - © 2026
                     tipo='success',
                     duration=3000
                 )
+            except PermissionError:
+                Toast.show(
+                    self.root,
+                    "Feche o arquivo Excel e tente novamente",
+                    tipo='warning',
+                    duration=4000
+                )
             except Exception as e:
-                messagebox.showerror("Erro", f"Erro ao exportar:\n{str(e)}")
+                Toast.show(
+                    self.root,
+                    f"Erro ao exportar: {str(e)[:80]}",
+                    tipo='error',
+                    duration=4000
+                )
+                print(f"Erro detalhado na exportação: {e}")
     
     # ==================== EXPORTAÇÕES ====================
     def exportar_excel(self):
         if self.df_filtrado is None or self.df_filtrado.empty:
-            messagebox.showwarning("Aviso", "Não há dados para exportar!")
+            Toast.show(
+                self.root,
+                "Não há dados para exportar",
+                tipo='warning',
+                duration=3000
+            )
             return
         
         filename = filedialog.asksaveasfilename(
@@ -1711,8 +1810,21 @@ DBSolutions Lab - © 2026
                     tipo='success',
                     duration=3000
                 )
+            except PermissionError:
+                Toast.show(
+                    self.root,
+                    "Feche o arquivo Excel e tente novamente",
+                    tipo='warning',
+                    duration=4000
+                )
             except Exception as e:
-                messagebox.showerror("Erro", f"Erro ao exportar:\n{str(e)}")
+                Toast.show(
+                    self.root,
+                    f"Erro ao exportar: {str(e)[:80]}",
+                    tipo='error',
+                    duration=4000
+                )
+                print(f"Erro detalhado na exportação: {e}")
     
     def gerar_hash_arquivo(self, filepath):
         """Gera hash MD5 do arquivo para detectar mudanças"""
@@ -1817,7 +1929,12 @@ DBSolutions Lab - © 2026
     
     def exportar_resumo(self):
         if self.df_filtrado is None or self.df_filtrado.empty:
-            messagebox.showwarning("Aviso", "Não há dados para exportar!")
+            Toast.show(
+                self.root,
+                "Não há dados para exportar",
+                tipo='warning',
+                duration=3000
+            )
             return
         
         filename = filedialog.asksaveasfilename(
@@ -1837,8 +1954,21 @@ DBSolutions Lab - © 2026
                     tipo='success',
                     duration=3000
                 )
+            except PermissionError:
+                Toast.show(
+                    self.root,
+                    "Feche o arquivo Excel e tente novamente",
+                    tipo='warning',
+                    duration=4000
+                )
             except Exception as e:
-                messagebox.showerror("Erro", f"Erro ao exportar:\n{str(e)}")
+                Toast.show(
+                    self.root,
+                    f"Erro ao exportar: {str(e)[:80]}",
+                    tipo='error',
+                    duration=4000
+                )
+                print(f"Erro detalhado na exportação: {e}")
 
 if __name__ == "__main__":
     _registrar_fontes()
