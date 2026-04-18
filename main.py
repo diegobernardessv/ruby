@@ -128,7 +128,7 @@ class SolicitacoesAppPro:
             fg_color='#3498db',
             hover_color='#2980b9',
             text_color='white',
-            font=('Quicksand', 11, 'bold'),
+            font=('Quicksand', 12, 'bold'),
             cursor='hand2',
             corner_radius=8,
             width=130,
@@ -142,7 +142,7 @@ class SolicitacoesAppPro:
             fg_color='#27ae60',
             hover_color='#229954',
             text_color='white',
-            font=('Quicksand', 11, 'bold'),
+            font=('Quicksand', 12, 'bold'),
             cursor='hand2',
             corner_radius=8,
             width=170,
@@ -196,7 +196,7 @@ class SolicitacoesAppPro:
             fg_color='#9b59b6',
             hover_color='#8e44ad',
             text_color='white',
-            font=('Quicksand', 10, 'bold'),
+            font=('Quicksand', 11, 'bold'),
             cursor='hand2',
             corner_radius=6,
             width=80,
@@ -210,7 +210,7 @@ class SolicitacoesAppPro:
             fg_color='#9b59b6',
             hover_color='#8e44ad',
             text_color='white',
-            font=('Quicksand', 10, 'bold'),
+            font=('Quicksand', 11, 'bold'),
             cursor='hand2',
             corner_radius=6,
             width=80,
@@ -224,7 +224,7 @@ class SolicitacoesAppPro:
             fg_color='#9b59b6',
             hover_color='#8e44ad',
             text_color='white',
-            font=('Quicksand', 10, 'bold'),
+            font=('Quicksand', 11, 'bold'),
             cursor='hand2',
             corner_radius=6,
             width=80,
@@ -238,7 +238,7 @@ class SolicitacoesAppPro:
             fg_color='#e67e22',
             hover_color='#d35400',
             text_color='white',
-            font=('Quicksand', 11, 'bold'),
+            font=('Quicksand', 12, 'bold'),
             cursor='hand2',
             corner_radius=8,
             width=150,
@@ -252,7 +252,7 @@ class SolicitacoesAppPro:
             fg_color='#95a5a6',
             hover_color='#7f8c8d',
             text_color='white',
-            font=('Quicksand', 11, 'bold'),
+            font=('Quicksand', 12, 'bold'),
             cursor='hand2',
             corner_radius=8,
             width=150,
@@ -265,7 +265,7 @@ class SolicitacoesAppPro:
         
         # Estilo das abas
         style = ttk.Style()
-        style.configure('TNotebook.Tab', font=('Quicksand', 10, 'bold'), padding=[20, 10])
+        style.configure('TNotebook.Tab', font=('Quicksand', 12, 'bold'), padding=[20, 10])
         
         # Criar abas
         self.criar_aba_dados()
