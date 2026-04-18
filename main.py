@@ -362,7 +362,12 @@ class SolicitacoesAppPro:
         ).pack(side=tk.RIGHT, padx=15, pady=5)
         
         # Título centralizado
-        title_frame = tk.Frame(self.aba_dados, bg='#2c3e50', height=50)
+        title_frame = ctk.CTkFrame(
+            self.aba_dados,
+            corner_radius=10,
+            height=50,
+            fg_color='#2c3e50'
+        )
         title_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
         title_frame.pack_propagate(False)
         
@@ -375,7 +380,13 @@ class SolicitacoesAppPro:
         ).pack(expand=True)
         
         # Campo de busca
-        search_frame = tk.Frame(self.aba_dados, bg='white', relief=tk.RAISED, borderwidth=2)
+        search_frame = ctk.CTkFrame(
+            self.aba_dados,
+            corner_radius=10,
+            border_width=2,
+            fg_color='white',
+            border_color='#95a5a6'
+        )
         search_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
         
         tk.Label(
@@ -510,7 +521,12 @@ class SolicitacoesAppPro:
         ).pack(side=tk.RIGHT, padx=15, pady=5)
         
         # Título centralizado
-        title_frame = tk.Frame(self.aba_status, bg='#2c3e50', height=50)
+        title_frame = ctk.CTkFrame(
+            self.aba_status,
+            corner_radius=10,
+            height=50,
+            fg_color='#2c3e50'
+        )
         title_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
         title_frame.pack_propagate(False)
         
@@ -523,7 +539,13 @@ class SolicitacoesAppPro:
         ).pack(expand=True)
         
         # Filtro de Status de Atendimento
-        filtro_status_frame = tk.Frame(self.aba_status, bg='white', relief=tk.RAISED, borderwidth=2)
+        filtro_status_frame = ctk.CTkFrame(
+            self.aba_status,
+            corner_radius=10,
+            border_width=2,
+            fg_color='white',
+            border_color='#27ae60'
+        )
         filtro_status_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
         
         tk.Label(
@@ -549,7 +571,13 @@ class SolicitacoesAppPro:
         filtro_combo.pack(side=tk.LEFT, padx=(0, 20), pady=8)
         
         # Campo de busca
-        search_frame = tk.Frame(self.aba_status, bg='white', relief=tk.RAISED, borderwidth=2)
+        search_frame = ctk.CTkFrame(
+            self.aba_status,
+            corner_radius=10,
+            border_width=2,
+            fg_color='white',
+            border_color='#95a5a6'
+        )
         search_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
         
         tk.Label(
