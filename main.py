@@ -294,7 +294,7 @@ class SolicitacoesAppPro:
     
     # ==================== ABA 1: DADOS ====================
     def criar_aba_dados(self):
-        self.aba_dados = tk.Frame(self.notebook, bg='white')
+        self.aba_dados = tk.Frame(self.notebook, bg='#e8f4f8')  # Azul claro
         self.notebook.add(self.aba_dados, text='📋 Solicitações Pendentes')
         
         # Info e exportação
@@ -447,7 +447,7 @@ class SolicitacoesAppPro:
     
     # ==================== ABA 2: STATUS DE ATENDIMENTO ====================
     def criar_aba_status_atendimento(self):
-        self.aba_status = tk.Frame(self.notebook, bg='white')
+        self.aba_status = tk.Frame(self.notebook, bg='#e8f8f5')  # Verde claro
         self.notebook.add(self.aba_status, text='✅ Status de Atendimento')
         
         # Info e KPIs
@@ -637,13 +637,13 @@ class SolicitacoesAppPro:
     
     # ==================== ABA 3: DASHBOARD ====================
     def criar_aba_dashboard(self):
-        self.aba_dashboard = tk.Frame(self.notebook, bg='#ecf0f1')
-        self.notebook.add(self.aba_dashboard, text='� Dashboard')
+        self.aba_dashboard = tk.Frame(self.notebook, bg='#fef5e7')  # Amarelo claro
+        self.notebook.add(self.aba_dashboard, text='📊 Dashboard')
         
         # Container com scroll
-        canvas = tk.Canvas(self.aba_dashboard, bg='#ecf0f1')
+        canvas = tk.Canvas(self.aba_dashboard, bg='#fef5e7')
         scrollbar = ttk.Scrollbar(self.aba_dashboard, orient="vertical", command=canvas.yview)
-        self.dashboard_frame = tk.Frame(canvas, bg='#ecf0f1')
+        self.dashboard_frame = tk.Frame(canvas, bg='#fef5e7')
         
         self.dashboard_frame.bind(
             "<Configure>",
@@ -661,19 +661,19 @@ class SolicitacoesAppPro:
             self.dashboard_frame,
             text="📊 Dashboard será atualizado após carregar os dados",
             font=('Quicksand', 14),
-            bg='#ecf0f1',
+            bg='#fef5e7',
             fg='#7f8c8d'
         ).pack(pady=50)
     
     # ==================== ABA 3: ANÁLISE DETALHADA ====================
     def criar_aba_analise(self):
-        self.aba_analise = tk.Frame(self.notebook, bg='#ecf0f1')
-        self.notebook.add(self.aba_analise, text='� Análise Detalhada')
+        self.aba_analise = tk.Frame(self.notebook, bg='#f4ecf7')  # Roxo claro
+        self.notebook.add(self.aba_analise, text='📈 Análise Detalhada')
         
         # Container com scroll
-        canvas = tk.Canvas(self.aba_analise, bg='#ecf0f1')
+        canvas = tk.Canvas(self.aba_analise, bg='#f4ecf7')
         scrollbar = ttk.Scrollbar(self.aba_analise, orient="vertical", command=canvas.yview)
-        self.analise_frame = tk.Frame(canvas, bg='#ecf0f1')
+        self.analise_frame = tk.Frame(canvas, bg='#f4ecf7')
         
         self.analise_frame.bind(
             "<Configure>",
@@ -691,13 +691,13 @@ class SolicitacoesAppPro:
             self.analise_frame,
             text="📈 Análise será atualizada após carregar os dados",
             font=('Quicksand', 14),
-            bg='#ecf0f1',
+            bg='#f4ecf7',
             fg='#7f8c8d'
         ).pack(pady=50)
     
     # ==================== ABA 4: RESUMO EXECUTIVO ====================
     def criar_aba_resumo(self):
-        self.aba_resumo = tk.Frame(self.notebook, bg='white')
+        self.aba_resumo = tk.Frame(self.notebook, bg='#fdecea')  # Rosa claro
         self.notebook.add(self.aba_resumo, text='📄 Resumo Executivo')
         
         # Botão de exportar
@@ -1217,7 +1217,7 @@ class SolicitacoesAppPro:
                 self.analise_frame,
                 text="📈 Nenhum dado para exibir",
                 font=('Quicksand', 14),
-                bg='#ecf0f1',
+                bg='#f4ecf7',
                 fg='#7f8c8d'
             ).pack(pady=50)
             return
@@ -1229,12 +1229,12 @@ class SolicitacoesAppPro:
             self.analise_frame,
             text="📊 Análise Detalhada",
             font=('Quicksand', 18, 'bold'),
-            bg='#ecf0f1',
+            bg='#f4ecf7',
             fg='#2c3e50'
         ).pack(pady=20)
         
         # Apenas 1 gráfico: Distribuição por Dia da Semana
-        graficos_frame = tk.Frame(self.analise_frame, bg='#ecf0f1')
+        graficos_frame = tk.Frame(self.analise_frame, bg='#f4ecf7')
         graficos_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=(0, 20))
         
         self.criar_grafico_dias_semana(graficos_frame).pack(fill=tk.BOTH, expand=True)
