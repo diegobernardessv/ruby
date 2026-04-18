@@ -5,7 +5,7 @@
 
 **Desenvolvido por:** Diego Bernardes  
 **Empresa:** DBSolutions Lab  
-**Versão:** 2.0 PRO
+**Versão:** 2.1 PRO - Enhanced Edition
 
 ---
 
@@ -16,26 +16,63 @@
 
 ## 🎯 O Que Há de Novo na Versão PRO
 
-### **Sistema de Abas Completo**
-A versão PRO transforma a aplicação simples em um **sistema completo de analytics** com 4 abas especializadas:
+### **🆕 Novidades da v2.1 - Enhanced Edition**
 
-1. **📋 Dados** - Visualização e exportação de dados
-2. **📈 Dashboard** - KPIs e gráficos principais
-3. **📊 Análise Detalhada** - Gráficos avançados e insights
-4. **📄 Resumo Executivo** - Relatório formatado para exportação
+#### **💾 Sistema de Configurações Inteligente**
+- ✅ Salva automaticamente o último arquivo usado
+- ✅ Carrega configurações ao iniciar
+- ✅ Não precisa selecionar o arquivo toda vez
+
+#### **📊 KPIs com Badges Coloridos**
+- ✅ Badges visuais com cores temáticas
+- ✅ Ícones destacados (✅ ⚠️ ❌)
+- ✅ Efeito 3D com bordas elevadas
+- ✅ Melhor legibilidade e impacto visual
+
+#### **🌈 Identidade Visual por Aba**
+- 🔵 **Solicitações Pendentes** - Azul claro (#e8f4f8)
+- 🟢 **Status de Atendimento** - Verde claro (#e8f8f5)
+- 🟡 **Dashboard** - Amarelo claro (#fef5e7)
+- 🟣 **Análise Detalhada** - Roxo claro (#f4ecf7)
+- 🔴 **Resumo Executivo** - Rosa claro (#fdecea)
+
+#### **✨ Melhorias de UX**
+- ✅ Fontes maiores e mais legíveis (12px nas abas, 14px nos labels)
+- ✅ Botões com tamanho otimizado
+- ✅ Hierarquia visual clara
+- ✅ Interface mais profissional e moderna
+
+---
+
+### **Sistema de Abas Completo**
+A versão PRO transforma a aplicação simples em um **sistema completo de analytics** com 5 abas especializadas:
+
+1. **📋 Solicitações Pendentes** - Visualização e exportação de dados
+2. **✅ Status de Atendimento** - Controle de atendimento com KPIs
+3. **� Dashboard** - KPIs e gráficos principais
+4. **� Análise Detalhada** - Gráficos avançados e insights
+5. **📄 Resumo Executivo** - Relatório formatado para exportação
 
 ---
 
 ## 📊 Recursos Implementados
 
-### **Aba 1: 📋 Dados**
+### **Aba 1: 📋 Solicitações Pendentes**
 - ✅ Tabela interativa com todas as solicitações
 - ✅ Filtro por intervalo de datas (De/Até)
 - ✅ Exportação para Excel
 - ✅ Contador de registros e quantidade total
 - ✅ Formatação inteligente de números (sem decimais desnecessários)
 
-### **Aba 2: 📈 Dashboard**
+### **Aba 2: ✅ Status de Atendimento**
+- ✅ Controle completo de status (Atendida, Parcial, Não Atendida)
+- ✅ KPIs visuais com badges coloridos
+- ✅ Filtro por status de atendimento
+- ✅ Busca por número de SA
+- ✅ Exportação para Excel
+- ✅ Percentuais de atendimento em tempo real
+
+### **Aba 3: � Dashboard**
 
 #### **KPIs Principais (Cards Coloridos):**
 - 📦 **Total de Solicitações** - Quantidade de linhas no período
@@ -61,7 +98,7 @@ A versão PRO transforma a aplicação simples em um **sistema completo de analy
    - Gráfico de pizza colorido
    - Percentual de uso de cada armazém
 
-### **Aba 3: 📊 Análise Detalhada**
+### **Aba 4: � Análise Detalhada**
 
 #### **Gráficos Avançados:**
 1. **🎯 Top 15 Materiais Mais Solicitados**
@@ -80,7 +117,7 @@ A versão PRO transforma a aplicação simples em um **sistema completo de analy
    - Barras coloridas por dia (Segunda a Domingo)
    - Identifica padrões semanais
 
-### **Aba 4: 📄 Resumo Executivo**
+### **Aba 5: 📄 Resumo Executivo**
 
 #### **Relatório Completo em Texto:**
 - 📅 Período analisado (data início, fim, dias úteis)
@@ -101,13 +138,21 @@ A versão PRO transforma a aplicação simples em um **sistema completo de analy
 - 🖼️ Layout responsivo com scroll
 - 🎯 Cores consistentes e harmoniosas
 - 📱 Interface moderna e intuitiva
+- 🌈 Identidade visual única por aba
+- ✨ Badges 3D com efeito elevado
+- 🔤 Tipografia otimizada (Quicksand)
 
-### **Cores dos KPIs:**
+### **Cores dos KPIs (Dashboard):**
 - Azul (#3498db) - Total de Solicitações
 - Verde (#27ae60) - Total de Itens
 - Laranja (#e67e22) - Setores Ativos
 - Roxo (#9b59b6) - Solicitantes
 - Vermelho (#e74c3c) - SAs Únicas
+
+### **Cores dos Badges (Status de Atendimento):**
+- Verde (#d5f4e6 / #27ae60) - ✅ Atendidas
+- Laranja (#fdebd0 / #e67e22) - ⚠️ Parciais
+- Vermelho (#fadbd8 / #e74c3c) - ❌ Não Atendidas
 
 ---
 
@@ -116,7 +161,12 @@ A versão PRO transforma a aplicação simples em um **sistema completo de analy
 ### **1. Executar a Versão PRO**
 
 ```powershell
-python interface_sa_pro.py
+python main.py
+```
+
+Ou com ambiente virtual:
+```powershell
+.venv\Scripts\python.exe main.py
 ```
 
 ### **2. Carregar Dados**
@@ -304,18 +354,29 @@ Para dúvidas ou sugestões de melhorias, consulte a documentação técnica ou 
 
 ## ✅ Checklist de Funcionalidades
 
-- [x] Sistema de 4 abas
-- [x] 5 KPIs principais
+### **Core Features:**
+- [x] Sistema de 5 abas especializadas
+- [x] 5 KPIs principais no Dashboard
+- [x] 3 KPIs de atendimento com badges
 - [x] 8 gráficos interativos
 - [x] Filtro de datas global
-- [x] Exportação Excel
+- [x] Exportação Excel (Dados + Status)
 - [x] Exportação Resumo TXT
 - [x] Atualização automática ao filtrar
-- [x] Design profissional
 - [x] Formatação inteligente de números
 - [x] Análise por dia da semana
 - [x] Top materiais, setores e solicitantes
 - [x] Lista de SAs únicas
+
+### **Enhanced Features (v2.1):**
+- [x] Sistema de configurações persistente
+- [x] Salvar/carregar último arquivo usado
+- [x] Badges coloridos com efeito 3D
+- [x] Identidade visual por aba (5 cores)
+- [x] Fontes otimizadas e hierarquia visual
+- [x] Botões com tamanho aumentado
+- [x] Interface CustomTkinter moderna
+- [x] Design profissional e consistente
 
 ---
 
@@ -331,4 +392,4 @@ Para dúvidas ou sugestões de melhorias, consulte a documentação técnica ou 
 
 **⚡ Zeus - Transformando dados em decisões divinas! 📊🚀**
 
-*Última atualização: Abril 2026*
+*Última atualização: 18/04/2026 - v2.1 Enhanced Edition*

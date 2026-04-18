@@ -110,21 +110,23 @@ ControladorSA/
 | Camada | Tecnologia | Versão |
 |--------|-----------|--------|
 | **Linguagem** | Python | 3.8+ |
-| **Interface Gráfica** | Tkinter | Built-in |
+| **Interface Gráfica** | Tkinter + CustomTkinter | Built-in + 5.0+ |
 | **Análise de Dados** | Pandas | 2.0.0+ |
 | **Gráficos** | Matplotlib | 3.5.0+ |
 | **Calendário** | tkcalendar | 1.6.1+ |
 | **Excel** | openpyxl | 3.1.0+ |
 | **Empacotamento** | PyInstaller | Latest |
 | **Tipografia** | Quicksand (Google Fonts) | Latest |
+| **Configurações** | JSON | Built-in |
 
 ---
 
 # Funcionalidades
 
 ## Aplicação Principal (`main.py`)
-- ✅ Sistema de 4 abas especializadas
-- ✅ **Aba Dados**: Tabela completa + filtros + exportação
+- ✅ Sistema de 5 abas especializadas com identidade visual única
+- ✅ **Aba Solicitações Pendentes**: Tabela completa + filtros + exportação
+- ✅ **Aba Status de Atendimento**: KPIs com badges + filtros + busca + exportação
 - ✅ **Aba Dashboard**: 5 KPIs coloridos + 4 gráficos principais
 - ✅ **Aba Análise Detalhada**: 4 gráficos avançados (materiais, setores, tendências)
 - ✅ **Aba Resumo Executivo**: Relatório formatado + exportação TXT
@@ -133,6 +135,9 @@ ControladorSA/
 - ✅ Top materiais, setores e solicitantes
 - ✅ Distribuição por armazém (pizza)
 - ✅ Evolução temporal de solicitações
+- ✅ Sistema de configurações persistente (config.json)
+- ✅ Badges coloridos 3D para KPIs de atendimento
+- ✅ Cores temáticas por aba (5 paletas diferentes)
 
 ---
 
@@ -190,14 +195,16 @@ pyinstaller ControladorSA.spec
 
 ---
 
-# Estado Atual do Produto (2026-04-17)
+# Estado Atual do Produto (2026-04-18) - v2.1 Enhanced Edition
 
-- ✅ **Aplicação PRO** com sistema de 4 abas
+## Core Features
+- ✅ **Aplicação PRO** com sistema de 5 abas especializadas
 - ✅ **8 gráficos interativos** integrados
-- ✅ **5 KPIs principais** com cards coloridos
-- ✅ **Tipografia Quicksand** integrada
+- ✅ **5 KPIs principais** com cards coloridos (Dashboard)
+- ✅ **3 KPIs de atendimento** com badges 3D (Status)
+- ✅ **Tipografia Quicksand** integrada e otimizada
 - ✅ **Filtro de datas** global (atualiza todas as abas)
-- ✅ **Exportação Excel** (dados filtrados)
+- ✅ **Exportação Excel** (dados + status filtrados)
 - ✅ **Exportação TXT** (resumo executivo)
 - ✅ **Análise por dia da semana**
 - ✅ **Top materiais, setores e solicitantes**
@@ -207,11 +214,32 @@ pyinstaller ControladorSA.spec
 - ✅ **Fontes customizadas** empacotadas no executável
 - ✅ **Documentação completa** (4 arquivos .md)
 
+## Enhanced Features (v2.1)
+- ✅ **Sistema de configurações** persistente (config.json)
+- ✅ **Salvar/carregar** último arquivo usado automaticamente
+- ✅ **Badges coloridos 3D** para KPIs de atendimento
+- ✅ **Identidade visual por aba** (5 cores temáticas)
+- ✅ **Fontes otimizadas** (12-14px, hierarquia clara)
+- ✅ **Botões maiores** e mais acessíveis
+- ✅ **Interface CustomTkinter** moderna
+- ✅ **Design profissional** e consistente
+
 # Proximos Passos
 
+## Em Progresso (v2.1)
+- ⏳ **Notificações toast** - Substituir messageboxes por toasts
+- ⏳ **Cache de dados** - Não recarregar sempre do Excel
+- ⏳ **Tratamento de erros** - Mensagens mais amigáveis
+- ⏳ **Otimização de performance** - Carregar mais rápido
+- ⏳ **Exportar para PDF** - Além de Excel e TXT
+- ⏳ **Filtro avançado** - Múltiplos critérios simultâneos
+- ⏳ **Gráficos interativos** - Zoom, hover com detalhes
+- ⏳ **Animações de abas** - Transições suaves
+
+## Backlog (Futuro)
 1. **Filtros adicionais** - Por armazém, setor, solicitante específico
 2. **Exportação de gráficos** - Salvar gráficos como PNG
-3. **Relatório PDF** - Gerar PDF com todos os gráficos
+3. **Relatório PDF completo** - Gerar PDF com todos os gráficos
 4. **Comparação de períodos** - Comparar dois intervalos de datas
 5. **Metas e alertas** - Configurar limites e notificações
 6. **Previsão de demanda** - ML para prever necessidades futuras
