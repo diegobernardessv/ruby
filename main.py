@@ -470,31 +470,43 @@ class SolicitacoesAppPro:
         )
         self.status_info_label.pack(side=tk.LEFT, padx=15, pady=8)
         
-        # KPIs de atendimento
+        # KPIs de atendimento com badges coloridos
         self.kpi_atendidas = tk.Label(
             info_frame,
             text="",
-            font=('Quicksand', 9, 'bold'),
-            bg='white',
-            fg='#27ae60'
+            font=('Quicksand', 10, 'bold'),
+            bg='#d5f4e6',
+            fg='#27ae60',
+            padx=12,
+            pady=6,
+            relief=tk.RAISED,
+            borderwidth=2
         )
         self.kpi_atendidas.pack(side=tk.LEFT, padx=10)
         
         self.kpi_parciais = tk.Label(
             info_frame,
             text="",
-            font=('Quicksand', 9, 'bold'),
-            bg='white',
-            fg='#e67e22'
+            font=('Quicksand', 10, 'bold'),
+            bg='#fdebd0',
+            fg='#e67e22',
+            padx=12,
+            pady=6,
+            relief=tk.RAISED,
+            borderwidth=2
         )
         self.kpi_parciais.pack(side=tk.LEFT, padx=10)
         
         self.kpi_nao_atendidas = tk.Label(
             info_frame,
             text="",
-            font=('Quicksand', 9, 'bold'),
-            bg='white',
-            fg='#e74c3c'
+            font=('Quicksand', 10, 'bold'),
+            bg='#fadbd8',
+            fg='#e74c3c',
+            padx=12,
+            pady=6,
+            relief=tk.RAISED,
+            borderwidth=2
         )
         self.kpi_nao_atendidas.pack(side=tk.LEFT, padx=10)
         
@@ -1485,9 +1497,9 @@ DBSolutions Lab - © 2026
             fg='#27ae60'
         )
         
-        self.kpi_atendidas.config(text=f"📦 {atendidas} Atendidas ({perc_atendidas:.1f}%)")
-        self.kpi_parciais.config(text=f"⚠️ {parciais} Parciais ({perc_parciais:.1f}%)")
-        self.kpi_nao_atendidas.config(text=f"❌ {nao_atendidas} Não Atendidas ({perc_nao_atendidas:.1f}%)")
+        self.kpi_atendidas.config(text=f"✅ Atendidas: {atendidas} ({perc_atendidas:.1f}%)")
+        self.kpi_parciais.config(text=f"⚠️ Parciais: {parciais} ({perc_parciais:.1f}%)")
+        self.kpi_nao_atendidas.config(text=f"❌ Não Atendidas: {nao_atendidas} ({perc_nao_atendidas:.1f}%)")
     
     def aplicar_filtro_atendimento(self):
         """Filtrar por status de atendimento"""
