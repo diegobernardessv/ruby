@@ -298,7 +298,7 @@ class SolicitacoesAppPro:
         self.info_label = tk.Label(
             info_frame,
             text="📊 Nenhum dado carregado",
-            font=('Quicksand', 10),
+            font=('Quicksand', 10, 'bold'),
             bg='white',
             fg='#7f8c8d',
             anchor='w'
@@ -451,7 +451,7 @@ class SolicitacoesAppPro:
         self.status_info_label = tk.Label(
             info_frame,
             text="📊 Nenhum dado carregado",
-            font=('Quicksand', 10),
+            font=('Quicksand', 10, 'bold'),
             bg='white',
             fg='#7f8c8d',
             anchor='w'
