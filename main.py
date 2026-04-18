@@ -106,7 +106,7 @@ class SolicitacoesAppPro:
         tk.Label(
             file_frame,
             text="📂 Arquivo:",
-            font=('Quicksand', 12, 'bold'),
+            font=('Quicksand', 14, 'bold'),
             bg='white'
         ).pack(side=tk.LEFT, padx=(0, 10))
         
@@ -156,11 +156,11 @@ class SolicitacoesAppPro:
         tk.Label(
             filter_frame,
             text="📅 Filtrar por Data de Emissão:",
-            font=('Quicksand', 12, 'bold'),
+            font=('Quicksand', 14, 'bold'),
             bg='white'
         ).pack(side=tk.LEFT, padx=(0, 10))
         
-        tk.Label(filter_frame, text="De:", font=('Quicksand', 12, 'bold'), bg='white').pack(side=tk.LEFT, padx=(0, 5))
+        tk.Label(filter_frame, text="De:", font=('Quicksand', 13, 'bold'), bg='white').pack(side=tk.LEFT, padx=(0, 5))
         self.data_inicio = DateEntry(
             filter_frame,
             font=('Quicksand', 9),
@@ -173,7 +173,7 @@ class SolicitacoesAppPro:
         )
         self.data_inicio.pack(side=tk.LEFT, padx=(0, 20))
         
-        tk.Label(filter_frame, text="Até:", font=('Quicksand', 12, 'bold'), bg='white').pack(side=tk.LEFT, padx=(10, 5))
+        tk.Label(filter_frame, text="Até:", font=('Quicksand', 13, 'bold'), bg='white').pack(side=tk.LEFT, padx=(10, 5))
         self.data_fim = DateEntry(
             filter_frame,
             font=('Quicksand', 9),
@@ -187,7 +187,7 @@ class SolicitacoesAppPro:
         self.data_fim.pack(side=tk.LEFT, padx=(0, 20))
         
         # Atalhos de data
-        tk.Label(filter_frame, text="Atalhos:", font=('Quicksand', 11, 'bold'), bg='white').pack(side=tk.LEFT, padx=(0, 5))
+        tk.Label(filter_frame, text="Atalhos:", font=('Quicksand', 13, 'bold'), bg='white').pack(side=tk.LEFT, padx=(0, 5))
         
         ctk.CTkButton(
             filter_frame,
