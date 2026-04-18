@@ -39,3 +39,6 @@ desktop.ini
 
 # Configurações locais
 config.json
+
+# Cache de dados
+.cache/

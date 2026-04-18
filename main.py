@@ -11,6 +11,8 @@ import ctypes
 import os
 import sys
 import json
+import pickle
+import hashlib
 
 
 class Toast:
@@ -120,6 +122,11 @@ class SolicitacoesAppPro:
         # Configurações
         self.config_file = 'config.json'
         self.config = self.carregar_config()
+        
+        # Cache
+        self.cache_dir = '.cache'
+        if not os.path.exists(self.cache_dir):
+            os.makedirs(self.cache_dir)
         
         self.criar_interface()
         
@@ -844,18 +851,36 @@ class SolicitacoesAppPro:
         self.root.update()
         
         try:
-            df = pd.read_excel(arquivo, sheet_name='Relatório de Controle de entr')
-            self.progress_bar.set(0.2)
-            self.root.update()
+            # Tentar carregar do cache primeiro
+            cache_data = self.carregar_do_cache(arquivo)
             
-            # Excluir apenas grupos (df_original = base para Dashboard/Análise/Resumo)
-            grupos_excluir = [4003, 4037]
-            df_base = df[~df['Grupo'].isin(grupos_excluir)]
-            self.progress_bar.set(0.4)
-            self.root.update()
-            
-            # Mapeamento para aba Dados e Dashboard
-            colunas_mapeamento = {
+            if cache_data is not None:
+                # Dados do cache
+                self.df_original = cache_data['df_original']
+                self.df_status_original = cache_data['df_status_original']
+                self.progress_bar.set(0.8)
+                self.root.update()
+                
+                Toast.show(
+                    self.root,
+                    "⚡ Dados carregados do cache (instantâneo)",
+                    tipo='info',
+                    duration=2500
+                )
+            else:
+                # Carregar do Excel (primeira vez ou arquivo modificado)
+                df = pd.read_excel(arquivo, sheet_name='Relatório de Controle de entr')
+                self.progress_bar.set(0.2)
+                self.root.update()
+                
+                # Excluir apenas grupos (df_original = base para Dashboard/Análise/Resumo)
+                grupos_excluir = [4003, 4037]
+                df_base = df[~df['Grupo'].isin(grupos_excluir)]
+                self.progress_bar.set(0.4)
+                self.root.update()
+                
+                # Mapeamento para aba Dados e Dashboard
+                colunas_mapeamento = {
                 'Numero SA': 'Numero SA',
                 'Codigo': 'Codigo',
                 'Descricao do Material': 'Descricao',
@@ -912,6 +937,19 @@ class SolicitacoesAppPro:
             # Para aba Status de Atendimento: guardar dados completos
             self.df_status_original = df_status_base.copy()
             self.df_status_filtrado = df_status_base.copy()
+            
+            # Salvar no cache
+            self.salvar_no_cache(arquivo, {
+                'df_original': self.df_original,
+                'df_status_original': self.df_status_original
+            })
+            
+            # Atualizar df_filtrado
+            self.df_filtrado = self.df_original.copy()
+            
+            # Para aba Dados: filtrar status (sem EM APROVAÇÃO e PRE-REQUISIÇÃO GERADA)
+            status_excluir = ['EM APROVAÇÃO', 'PRE-REQUISIÇÃO GERADA']
+            df_dados = self.df_original[~self.df_original['Status'].isin(status_excluir)].copy()
             
             # Atualizar tabela da aba Dados (COM filtro de status)
             self.progress_bar.set(0.6)
@@ -1675,6 +1713,83 @@ DBSolutions Lab - © 2026
                 )
             except Exception as e:
                 messagebox.showerror("Erro", f"Erro ao exportar:\n{str(e)}")
+    
+    def gerar_hash_arquivo(self, filepath):
+        """Gera hash MD5 do arquivo para detectar mudanças"""
+        try:
+            hash_md5 = hashlib.md5()
+            with open(filepath, "rb") as f:
+                for chunk in iter(lambda: f.read(4096), b""):
+                    hash_md5.update(chunk)
+            return hash_md5.hexdigest()
+        except Exception as e:
+            print(f"Erro ao gerar hash: {e}")
+            return None
+    
+    def obter_cache_path(self, arquivo):
+        """Retorna o caminho do arquivo de cache"""
+        arquivo_hash = hashlib.md5(arquivo.encode()).hexdigest()
+        return os.path.join(self.cache_dir, f"{arquivo_hash}.pkl")
+    
+    def carregar_do_cache(self, arquivo):
+        """Tenta carregar dados do cache"""
+        try:
+            cache_path = self.obter_cache_path(arquivo)
+            
+            if not os.path.exists(cache_path):
+                return None
+            
+            # Verificar se o arquivo original foi modificado
+            arquivo_hash = self.gerar_hash_arquivo(arquivo)
+            
+            with open(cache_path, 'rb') as f:
+                cache_data = pickle.load(f)
+            
+            # Verificar se o hash corresponde
+            if cache_data.get('hash') == arquivo_hash:
+                print(f"✅ Cache encontrado e válido para {arquivo}")
+                return cache_data.get('data')
+            else:
+                print(f"⚠️ Cache inválido (arquivo modificado)")
+                return None
+                
+        except Exception as e:
+            print(f"Erro ao carregar cache: {e}")
+            return None
+    
+    def salvar_no_cache(self, arquivo, data):
+        """Salva dados no cache"""
+        try:
+            cache_path = self.obter_cache_path(arquivo)
+            arquivo_hash = self.gerar_hash_arquivo(arquivo)
+            
+            cache_data = {
+                'hash': arquivo_hash,
+                'data': data,
+                'timestamp': datetime.now().isoformat()
+            }
+            
+            with open(cache_path, 'wb') as f:
+                pickle.dump(cache_data, f)
+            
+            print(f"💾 Cache salvo para {arquivo}")
+            return True
+            
+        except Exception as e:
+            print(f"Erro ao salvar cache: {e}")
+            return False
+    
+    def limpar_cache(self):
+        """Remove todos os arquivos de cache"""
+        try:
+            if os.path.exists(self.cache_dir):
+                for arquivo in os.listdir(self.cache_dir):
+                    os.remove(os.path.join(self.cache_dir, arquivo))
+                print("🗑️ Cache limpo")
+                return True
+        except Exception as e:
+            print(f"Erro ao limpar cache: {e}")
+            return False
     
     def carregar_config(self):
         """Carrega configurações do arquivo JSON"""
