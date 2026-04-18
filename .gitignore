@@ -1,0 +1,38 @@
+# Claude Code local config — nunca commitar
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dados sensíveis (não commitar planilhas com dados reais)
+*.xlsx
+*.xls
+!exemplo.xlsx
+
+# Logs
+*.log
