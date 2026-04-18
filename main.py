@@ -54,6 +54,21 @@ class SolicitacoesAppPro:
         header_frame.pack(fill=tk.X, pady=(0, 10))
         header_frame.pack_propagate(False)
         
+        # Switch de tema (canto direito)
+        theme_switch = ctk.CTkSwitch(
+            header_frame,
+            text="🌙 Modo Escuro",
+            command=self.alternar_tema,
+            onvalue="dark",
+            offvalue="light",
+            font=('Quicksand', 10, 'bold'),
+            fg_color='#FFD700',
+            progress_color='#2c3e50',
+            button_color='#FFD700',
+            button_hover_color='#f39c12'
+        )
+        theme_switch.place(relx=0.95, rely=0.5, anchor='e')
+        
         # Container centralizado para título e subtítulo lado a lado
         header_content = tk.Frame(header_frame, bg='#2c3e50')
         header_content.place(relx=0.5, rely=0.5, anchor='center')
@@ -89,7 +104,13 @@ class SolicitacoesAppPro:
         subtitle_label.pack(side=tk.LEFT)
         
         # ========== PAINEL DE CONTROLE ==========
-        control_frame = tk.Frame(main_frame, bg='white', relief=tk.RAISED, borderwidth=2)
+        control_frame = ctk.CTkFrame(
+            main_frame,
+            corner_radius=15,
+            border_width=2,
+            fg_color='white',
+            border_color='#bdc3c7'
+        )
         control_frame.pack(fill=tk.X, pady=(0, 10), padx=5)
         
         # Linha 1: Arquivo
@@ -103,7 +124,14 @@ class SolicitacoesAppPro:
             bg='white'
         ).pack(side=tk.LEFT, padx=(0, 10))
         
-        self.arquivo_entry = tk.Entry(file_frame, font=('Quicksand', 10), width=50)
+        self.arquivo_entry = ctk.CTkEntry(
+            file_frame,
+            font=('Quicksand', 10),
+            width=400,
+            height=32,
+            corner_radius=8,
+            border_width=2
+        )
         self.arquivo_entry.insert(0, 'simecr05.xlsx')
         self.arquivo_entry.pack(side=tk.LEFT, padx=(0, 10))
         
@@ -272,7 +300,13 @@ class SolicitacoesAppPro:
         self.notebook.add(self.aba_dados, text='📋 Solicitações Pendentes')
         
         # Info e exportação
-        info_frame = tk.Frame(self.aba_dados, bg='white', relief=tk.RAISED, borderwidth=2)
+        info_frame = ctk.CTkFrame(
+            self.aba_dados,
+            corner_radius=12,
+            border_width=2,
+            fg_color='white',
+            border_color='#3498db'
+        )
         info_frame.pack(fill=tk.X, pady=(10, 10), padx=10)
         
         self.info_label = tk.Label(
@@ -337,11 +371,15 @@ class SolicitacoesAppPro:
         self.search_var = tk.StringVar()
         self.search_var.trace('w', lambda *args: self.filtrar_tabela_busca())
         
-        search_entry = tk.Entry(
+        search_entry = ctk.CTkEntry(
             search_frame,
             textvariable=self.search_var,
             font=('Quicksand', 10),
-            width=50
+            width=400,
+            height=32,
+            corner_radius=8,
+            border_width=2,
+            placeholder_text="Digite para buscar..."
         )
         search_entry.pack(side=tk.LEFT, padx=(0, 10), pady=8)
         
@@ -394,7 +432,13 @@ class SolicitacoesAppPro:
         self.notebook.add(self.aba_status, text='✅ Status de Atendimento')
         
         # Info e KPIs
-        info_frame = tk.Frame(self.aba_status, bg='white', relief=tk.RAISED, borderwidth=2)
+        info_frame = ctk.CTkFrame(
+            self.aba_status,
+            corner_radius=12,
+            border_width=2,
+            fg_color='white',
+            border_color='#27ae60'
+        )
         info_frame.pack(fill=tk.X, pady=(10, 10), padx=10)
         
         self.status_info_label = tk.Label(
@@ -473,16 +517,19 @@ class SolicitacoesAppPro:
         ).pack(side=tk.LEFT, padx=15, pady=8)
         
         self.filtro_atendimento_var = tk.StringVar(value="Todas")
-        filtro_combo = ttk.Combobox(
+        filtro_combo = ctk.CTkComboBox(
             filtro_status_frame,
-            textvariable=self.filtro_atendimento_var,
+            variable=self.filtro_atendimento_var,
             values=["Todas", "TOTALMENTE ATENDIDA", "PARCIALMENTE ATENDIDA", "NÃO ATENDIDA"],
             state='readonly',
             font=('Quicksand', 9),
-            width=25
+            width=280,
+            height=32,
+            corner_radius=8,
+            border_width=2,
+            command=lambda choice: self.aplicar_filtro_atendimento()
         )
         filtro_combo.pack(side=tk.LEFT, padx=(0, 20), pady=8)
-        filtro_combo.bind('<<ComboboxSelected>>', lambda e: self.aplicar_filtro_atendimento())
         
         # Campo de busca
         search_frame = tk.Frame(self.aba_status, bg='white', relief=tk.RAISED, borderwidth=2)
@@ -498,11 +545,15 @@ class SolicitacoesAppPro:
         self.status_search_var = tk.StringVar()
         self.status_search_var.trace('w', lambda *args: self.filtrar_status_busca())
         
-        search_entry = tk.Entry(
+        search_entry = ctk.CTkEntry(
             search_frame,
             textvariable=self.status_search_var,
             font=('Quicksand', 10),
-            width=50
+            width=400,
+            height=32,
+            corner_radius=8,
+            border_width=2,
+            placeholder_text="Digite para buscar..."
         )
         search_entry.pack(side=tk.LEFT, padx=(0, 10), pady=8)
         
@@ -1469,6 +1520,15 @@ DBSolutions Lab - © 2026
                 )
             except Exception as e:
                 messagebox.showerror("Erro", f"Erro ao exportar:\n{str(e)}")
+    
+    def alternar_tema(self):
+        """Alternar entre tema claro e escuro"""
+        modo_atual = ctk.get_appearance_mode()
+        
+        if modo_atual == "Light":
+            ctk.set_appearance_mode("dark")
+        else:
+            ctk.set_appearance_mode("light")
     
     def exportar_resumo(self):
         if self.df_filtrado is None or self.df_filtrado.empty:
