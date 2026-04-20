@@ -795,7 +795,20 @@ class SolicitacoesAppPro:
             cursor='hand2',
             corner_radius=8,
             width=220
-        ).pack(side=tk.RIGHT, padx=20)
+        ).pack(side=tk.RIGHT, padx=(0, 20))
+
+        ctk.CTkButton(
+            btn_frame,
+            text=" Exportar Relatório (PDF)",
+            command=self.exportar_pdf,
+            fg_color='#c0392b',
+            hover_color='#a93226',
+            text_color='white',
+            font=('Quicksand', 10, 'bold'),
+            cursor='hand2',
+            corner_radius=8,
+            width=220
+        ).pack(side=tk.RIGHT, padx=(0, 10))
         
         # Área de texto com scroll
         text_frame = tk.Frame(self.aba_resumo, bg='white')
@@ -1969,6 +1982,290 @@ DBSolutions Lab - © 2026
                     duration=4000
                 )
                 print(f"Erro detalhado na exportação: {e}")
+
+    # ==================== EXPORTAR PDF ====================
+    def exportar_pdf(self):
+        if self.df_filtrado is None or self.df_filtrado.empty:
+            Toast.show(self.root, "Não há dados para exportar", tipo='warning', duration=3000)
+            return
+
+        try:
+            from fpdf import FPDF
+        except ImportError:
+            Toast.show(
+                self.root,
+                "Dependência ausente. Execute: pip install fpdf2",
+                tipo='error',
+                duration=6000
+            )
+            return
+
+        filename = filedialog.asksaveasfilename(
+            defaultextension=".pdf",
+            filetypes=[("PDF files", "*.pdf"), ("All files", "*.*")],
+            initialfile="relatorio_zeus.pdf"
+        )
+        if not filename:
+            return
+
+        import tempfile
+        temp_files = []
+        try:
+            df = self.df_filtrado
+
+            # Período
+            if self.filtro_data_inicio and self.filtro_data_fim:
+                data_inicio_str = self.filtro_data_inicio.strftime('%d/%m/%Y')
+                data_fim_str    = self.filtro_data_fim.strftime('%d/%m/%Y')
+            else:
+                data_inicio_str = df['Data Emissao'].min().strftime('%d/%m/%Y')
+                data_fim_str    = df['Data Emissao'].max().strftime('%d/%m/%Y')
+
+            # KPIs
+            total_sas     = df['Numero SA'].nunique()
+            total_itens   = len(df)
+            total_setores = df['Setor'].nunique()
+            total_solicit = df['Solicitante'].nunique()
+
+            top_setores      = df['Setor'].value_counts().head(5)
+            top_solicitantes = df['Solicitante'].value_counts().head(5)
+            top_materiais    = df['Descricao'].value_counts().head(10)
+
+            # Gráficos como PNG temporários
+            temp_files = self._gerar_figuras_pdf()
+
+            # Fontes (funciona em dev e no executável PyInstaller)
+            if hasattr(sys, '_MEIPASS'):
+                font_base = os.path.join(sys._MEIPASS, 'assets', 'fonts')
+            else:
+                font_base = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'fonts')
+
+            font_regular = os.path.join(font_base, 'Quicksand-Regular.ttf')
+            font_bold    = os.path.join(font_base, 'Quicksand-Bold.ttf')
+
+            pdf = FPDF()
+            pdf.set_auto_page_break(auto=True, margin=15)
+            pdf.add_font("Quicksand", style="",  fname=font_regular)
+            pdf.add_font("Quicksand", style="B", fname=font_bold)
+
+            MARGEM  = 15
+            LARGURA = 210 - 2 * MARGEM  # 180mm
+
+            # ===== PÁGINA 1: RESUMO EXECUTIVO =====
+            pdf.add_page()
+
+            # Cabeçalho azul Zeus
+            pdf.set_fill_color(52, 152, 219)
+            pdf.rect(0, 0, 210, 30, 'F')
+            pdf.set_xy(MARGEM, 7)
+            pdf.set_text_color(255, 215, 0)
+            pdf.set_font("Quicksand", "B", 17)
+            pdf.cell(0, 9, "ZEUS - Sistema de Controle de Solicitacoes", ln=True)
+            pdf.set_xy(MARGEM, 19)
+            pdf.set_text_color(210, 230, 250)
+            pdf.set_font("Quicksand", "", 9)
+            pdf.cell(0, 6, "DBSolutions Lab  |  Relatorio Executivo", ln=True)
+
+            pdf.set_y(37)
+            pdf.set_text_color(44, 62, 80)
+
+            # Período e timestamp
+            pdf.set_font("Quicksand", "B", 11)
+            pdf.cell(LARGURA, 7, f"Periodo: {data_inicio_str}  -  {data_fim_str}", ln=True)
+            pdf.set_font("Quicksand", "", 9)
+            pdf.cell(LARGURA, 5, f"Gerado em: {datetime.now().strftime('%d/%m/%Y as %H:%M')}", ln=True)
+            pdf.ln(5)
+
+            # Linha divisória
+            pdf.set_draw_color(52, 152, 219)
+            pdf.set_line_width(0.5)
+            pdf.line(MARGEM, pdf.get_y(), MARGEM + LARGURA, pdf.get_y())
+            pdf.ln(6)
+
+            # KPI boxes coloridos
+            pdf.set_font("Quicksand", "B", 11)
+            pdf.set_text_color(44, 62, 80)
+            pdf.cell(LARGURA, 6, "ESTATISTICAS GERAIS", ln=True)
+            pdf.ln(3)
+
+            box_w      = (LARGURA - 6) / 4
+            box_y      = pdf.get_y()
+            kpi_labels = ["Total de SAs", "Total de Itens", "Setores Ativos", "Solicitantes"]
+            kpi_values = [f"{total_sas:,}", f"{total_itens:,}", f"{total_setores:,}", f"{total_solicit:,}"]
+            kpi_cores  = [(52, 152, 219), (46, 204, 113), (155, 89, 182), (230, 126, 34)]
+
+            for i, (label, value, cor) in enumerate(zip(kpi_labels, kpi_values, kpi_cores)):
+                x = MARGEM + i * (box_w + 2)
+                pdf.set_fill_color(*cor)
+                pdf.rect(x, box_y, box_w, 20, 'F')
+                pdf.set_xy(x, box_y + 3)
+                pdf.set_text_color(255, 255, 255)
+                pdf.set_font("Quicksand", "B", 14)
+                pdf.cell(box_w, 8, value, align='C')
+                pdf.set_xy(x, box_y + 13)
+                pdf.set_font("Quicksand", "", 7)
+                pdf.cell(box_w, 5, label, align='C')
+
+            pdf.set_y(box_y + 26)
+            pdf.set_text_color(44, 62, 80)
+            pdf.line(MARGEM, pdf.get_y(), MARGEM + LARGURA, pdf.get_y())
+            pdf.ln(6)
+
+            # TOP 5 SETORES
+            pdf.set_font("Quicksand", "B", 11)
+            pdf.cell(LARGURA, 6, "TOP 5 SETORES (por numero de itens)", ln=True)
+            pdf.ln(2)
+
+            for i, (setor, qtd) in enumerate(top_setores.items(), 1):
+                pdf.set_fill_color(245, 245, 245) if i % 2 == 0 else pdf.set_fill_color(255, 255, 255)
+                setor_trunc = setor[:62] + "..." if len(setor) > 62 else setor
+                pdf.set_font("Quicksand", "", 10)
+                pdf.cell(8,   7, f"{i}.", fill=True)
+                pdf.cell(148, 7, setor_trunc, fill=True)
+                pdf.set_font("Quicksand", "B", 10)
+                pdf.cell(0,   7, f"{qtd:,}", align='R', fill=True, ln=True)
+
+            pdf.ln(5)
+
+            # TOP 5 SOLICITANTES
+            pdf.set_font("Quicksand", "B", 11)
+            pdf.cell(LARGURA, 6, "TOP 5 SOLICITANTES", ln=True)
+            pdf.ln(2)
+
+            for i, (nome, qtd) in enumerate(top_solicitantes.items(), 1):
+                pdf.set_fill_color(245, 245, 245) if i % 2 == 0 else pdf.set_fill_color(255, 255, 255)
+                pdf.set_font("Quicksand", "", 10)
+                pdf.cell(8,   7, f"{i}.", fill=True)
+                pdf.cell(148, 7, nome[:62], fill=True)
+                pdf.set_font("Quicksand", "B", 10)
+                pdf.cell(0,   7, f"{qtd:,}", align='R', fill=True, ln=True)
+
+            pdf.ln(5)
+
+            # TOP 10 MATERIAIS
+            pdf.set_font("Quicksand", "B", 11)
+            pdf.cell(LARGURA, 6, "TOP 10 MATERIAIS MAIS SOLICITADOS", ln=True)
+            pdf.ln(2)
+
+            for i, (material, qtd) in enumerate(top_materiais.items(), 1):
+                pdf.set_fill_color(245, 245, 245) if i % 2 == 0 else pdf.set_fill_color(255, 255, 255)
+                mat_trunc = material[:72] + "..." if len(material) > 72 else material
+                pdf.set_font("Quicksand", "", 9)
+                pdf.cell(10,  6, f"{i:>2}.", fill=True)
+                pdf.cell(146, 6, mat_trunc, fill=True)
+                pdf.set_font("Quicksand", "B", 9)
+                pdf.cell(0,   6, f"{qtd:,}", align='R', fill=True, ln=True)
+
+            self._pdf_rodape(pdf, MARGEM, LARGURA)
+
+            # ===== PÁGINAS DE GRÁFICOS =====
+            for titulo, img_path in temp_files:
+                pdf.add_page()
+
+                # Mini cabeçalho azul
+                pdf.set_fill_color(52, 152, 219)
+                pdf.rect(0, 0, 210, 14, 'F')
+                pdf.set_xy(MARGEM, 4)
+                pdf.set_text_color(255, 215, 0)
+                pdf.set_font("Quicksand", "B", 11)
+                pdf.cell(0, 6, "ZEUS - Graficos Analiticos", ln=True)
+
+                pdf.set_y(21)
+                pdf.set_text_color(44, 62, 80)
+                pdf.set_font("Quicksand", "B", 12)
+                pdf.cell(LARGURA, 7, titulo, ln=True)
+                pdf.ln(4)
+
+                pdf.image(img_path, x=MARGEM, w=LARGURA)
+
+                self._pdf_rodape(pdf, MARGEM, LARGURA)
+
+            pdf.output(filename)
+            Toast.show(self.root, "PDF exportado com sucesso!", tipo='success', duration=3000)
+
+        except Exception as e:
+            Toast.show(self.root, f"Erro ao gerar PDF: {str(e)[:80]}", tipo='error', duration=4000)
+            print(f"Erro detalhado PDF: {e}")
+        finally:
+            for _, path in temp_files:
+                try:
+                    os.remove(path)
+                except Exception:
+                    pass
+
+    def _pdf_rodape(self, pdf, margem, largura):
+        """Adiciona rodapé com timestamp e número de página."""
+        pdf.set_y(-12)
+        pdf.set_draw_color(200, 200, 200)
+        pdf.set_line_width(0.3)
+        pdf.line(margem, pdf.get_y(), margem + largura, pdf.get_y())
+        pdf.ln(1)
+        pdf.set_font("Quicksand", "", 7)
+        pdf.set_text_color(150, 150, 150)
+        pdf.cell(
+            largura, 5,
+            f"Zeus  |  DBSolutions Lab  |  {datetime.now().strftime('%d/%m/%Y as %H:%M')}  |  Pag. {pdf.page_no()}",
+            align='C'
+        )
+
+    def _gerar_figuras_pdf(self):
+        """Gera figuras matplotlib como PNG temporários para o PDF. Retorna lista de (titulo, path)."""
+        import tempfile
+        df = self.df_filtrado
+        figuras = []
+
+        # Top 10 Setores
+        dados = df['Setor'].value_counts().head(10).sort_values(ascending=True)
+        fig, ax = plt.subplots(figsize=(10, 4))
+        ax.barh(range(len(dados)), dados.values, color='#27ae60')
+        ax.set_yticks(range(len(dados)))
+        ax.set_yticklabels([s[:40] + '...' if len(s) > 40 else s for s in dados.index], fontsize=9)
+        ax.set_xlabel('Numero de Itens', fontsize=11)
+        ax.grid(True, alpha=0.3, axis='x')
+        ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+        fig.tight_layout()
+        tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
+        fig.savefig(tmp.name, dpi=150, bbox_inches='tight')
+        plt.close(fig)
+        tmp.close()
+        figuras.append(("Top 10 Setores por Numero de Itens", tmp.name))
+
+        # Top 10 Solicitantes
+        dados = df['Solicitante'].value_counts().head(10).sort_values(ascending=True)
+        fig, ax = plt.subplots(figsize=(10, 4))
+        ax.barh(range(len(dados)), dados.values, color='#9b59b6')
+        ax.set_yticks(range(len(dados)))
+        ax.set_yticklabels(dados.index, fontsize=9)
+        ax.set_xlabel('Numero de Solicitacoes', fontsize=11)
+        ax.grid(True, alpha=0.3, axis='x')
+        ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+        fig.tight_layout()
+        tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
+        fig.savefig(tmp.name, dpi=150, bbox_inches='tight')
+        plt.close(fig)
+        tmp.close()
+        figuras.append(("Top 10 Solicitantes", tmp.name))
+
+        # Distribuição por dia da semana
+        dias_map  = {0: 'Seg', 1: 'Ter', 2: 'Qua', 3: 'Qui', 4: 'Sex', 5: 'Sab', 6: 'Dom'}
+        ordem     = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom']
+        dias_serie = df['Data Emissao'].dt.dayofweek.map(dias_map).value_counts()
+        dias_serie = dias_serie.reindex([d for d in ordem if d in dias_serie.index])
+        fig, ax = plt.subplots(figsize=(10, 4))
+        ax.bar(range(len(dias_serie)), dias_serie.values, color='#3498db')
+        ax.set_xticks(range(len(dias_serie)))
+        ax.set_xticklabels(dias_serie.index, fontsize=10)
+        ax.set_ylabel('Numero de Solicitacoes', fontsize=11)
+        ax.grid(True, alpha=0.3, axis='y')
+        ax.yaxis.set_major_locator(plt.MaxNLocator(integer=True))
+        fig.tight_layout()
+        tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
+        fig.savefig(tmp.name, dpi=150, bbox_inches='tight')
+        plt.close(fig)
+        tmp.close()
+        figuras.append(("Distribuicao por Dia da Semana", tmp.name))
+
+        return figuras
 
 if __name__ == "__main__":
     _registrar_fontes()
