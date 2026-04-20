@@ -105,21 +105,7 @@ Sistema desktop para análise e controle de solicitações ao armazém, com inte
 
 ---
 
-### v4.0 — Banco de Dados (Futuro)
-
-**Objetivo:** Eliminar dependência do Excel como fonte de dados.
-
-**Prioridade: baixa (decisão arquitetural importante)**
-
-- [ ] Migrar de Excel para SQLite
-- [ ] Importação automática de planilhas para o banco
-- [ ] Histórico versionado de dados
-- [ ] Queries otimizadas para grandes volumes
-- [ ] Suporte futuro a PostgreSQL
-
----
-
-### v4.1 — Previsão de Demanda (Futuro)
+### v4.0 — Previsão de Demanda (Futuro)
 
 **Objetivo:** Antecipar necessidades com ML simples.
 
@@ -171,7 +157,6 @@ Sistema desktop para análise e controle de solicitações ao armazém, com inte
 - reportlab ou fpdf2 (PDF)
 
 ### Futuro (v4.0+)
-- SQLite / PostgreSQL
 - Flask / FastAPI
 - scikit-learn
 
