@@ -118,6 +118,7 @@ ControladorSA/
 | **Empacotamento** | PyInstaller | Latest |
 | **Tipografia** | Quicksand (Google Fonts) | Latest |
 | **Configurações** | JSON | Built-in |
+| **PDF** | fpdf2 | 2.7.0+ |
 
 ---
 
@@ -125,19 +126,22 @@ ControladorSA/
 
 ## Aplicação Principal (`main.py`)
 - ✅ Sistema de 5 abas especializadas com identidade visual única
-- ✅ **Aba Solicitações Pendentes**: Tabela completa + filtros + exportação
-- ✅ **Aba Status de Atendimento**: KPIs com badges + filtros + busca + exportação
+- ✅ **Aba Solicitações Pendentes**: Tabela + filtros avançados (data, armazém, setor, solicitante) + busca + exportação Excel
+- ✅ **Aba Status de Atendimento**: KPIs badges + filtros avançados + busca + exportação Excel
 - ✅ **Aba Dashboard**: 5 KPIs coloridos + 4 gráficos principais
-- ✅ **Aba Análise Detalhada**: 4 gráficos avançados (materiais, setores, tendências)
-- ✅ **Aba Resumo Executivo**: Relatório formatado + exportação TXT
+- ✅ **Aba Análise Detalhada**: gráficos avançados (materiais, setores, tendências)
+- ✅ **Aba Resumo Executivo**: Relatório formatado + exportação TXT + exportação PDF
 - ✅ Gráficos integrados com Matplotlib
 - ✅ Análise por dia da semana
 - ✅ Top materiais, setores e solicitantes
 - ✅ Distribuição por armazém (pizza)
 - ✅ Evolução temporal de solicitações
 - ✅ Sistema de configurações persistente (config.json)
+- ✅ Cache inteligente de dados (hash MD5, invalidação automática)
+- ✅ Notificações toast modernas
 - ✅ Badges coloridos 3D para KPIs de atendimento
 - ✅ Cores temáticas por aba (5 paletas diferentes)
+- ✅ Colunas da tabela centralizadas (exceto Descricao e Observacao)
 
 ---
 
@@ -195,53 +199,36 @@ pyinstaller ControladorSA.spec
 
 ---
 
-# Estado Atual do Produto (2026-04-18) - v2.1 Enhanced Edition
+# Estado Atual do Produto (2026-04-20) - v2.3
 
-## Core Features
-- ✅ **Aplicação PRO** com sistema de 5 abas especializadas
-- ✅ **8 gráficos interativos** integrados
-- ✅ **5 KPIs principais** com cards coloridos (Dashboard)
-- ✅ **3 KPIs de atendimento** com badges 3D (Status)
-- ✅ **Tipografia Quicksand** integrada e otimizada
-- ✅ **Filtro de datas** global (atualiza todas as abas)
-- ✅ **Exportação Excel** (dados + status filtrados)
-- ✅ **Exportação TXT** (resumo executivo)
-- ✅ **Análise por dia da semana**
-- ✅ **Top materiais, setores e solicitantes**
-- ✅ **Distribuição por armazém** (gráfico pizza)
-- ✅ **Evolução temporal** de solicitações e quantidades
-- ✅ **Executável standalone** via PyInstaller
-- ✅ **Fontes customizadas** empacotadas no executável
-- ✅ **Documentação completa** (4 arquivos .md)
+## Entregue
 
-## Enhanced Features (v2.1)
+### v2.1 Enhanced Edition
 - ✅ **Sistema de configurações** persistente (config.json)
-- ✅ **Salvar/carregar** último arquivo usado automaticamente
+- ✅ **Cache inteligente** com hash MD5 (não recarrega Excel sem mudança)
+- ✅ **Notificações toast** modernas (substituiu messageboxes)
+- ✅ **Tratamento de erros** com mensagens amigáveis
 - ✅ **Badges coloridos 3D** para KPIs de atendimento
 - ✅ **Identidade visual por aba** (5 cores temáticas)
-- ✅ **Fontes otimizadas** (12-14px, hierarquia clara)
-- ✅ **Botões maiores** e mais acessíveis
-- ✅ **Interface CustomTkinter** moderna
-- ✅ **Design profissional** e consistente
+- ✅ **Interface CustomTkinter** moderna e profissional
 
-# Proximos Passos
+### v2.2 Exportação Avançada
+- ✅ **Exportação PDF** com branding Zeus (cabeçalho azul/dourado)
+- ✅ PDF contém KPIs, top setores/solicitantes/materiais e 3 gráficos
+- ✅ Fontes Quicksand empacotadas no PDF (funciona no executável)
 
-## Em Progresso (v2.1)
-- ⏳ **Notificações toast** - Substituir messageboxes por toasts
-- ⏳ **Cache de dados** - Não recarregar sempre do Excel
-- ⏳ **Tratamento de erros** - Mensagens mais amigáveis
-- ⏳ **Otimização de performance** - Carregar mais rápido
-- ⏳ **Exportar para PDF** - Além de Excel e TXT
-- ⏳ **Filtro avançado** - Múltiplos critérios simultâneos
-- ⏳ **Gráficos interativos** - Zoom, hover com detalhes
-- ⏳ **Animações de abas** - Transições suaves
+### v2.3 Filtros Avançados
+- ✅ **Filtros de Armazém, Setor e Solicitante** em ambas as abas
+- ✅ Dropdowns populados dinamicamente com dados disponíveis
+- ✅ Pipeline unificado `_refresh_tabela_*` — todos os filtros passam pelo mesmo fluxo
+- ✅ Colunas da tabela centralizadas (exceto Descricao e Observacao)
 
-## Backlog (Futuro)
-1. **Filtros adicionais** - Por armazém, setor, solicitante específico
-2. **Exportação de gráficos** - Salvar gráficos como PNG
-3. **Relatório PDF completo** - Gerar PDF com todos os gráficos
-4. **Comparação de períodos** - Comparar dois intervalos de datas
-5. **Metas e alertas** - Configurar limites e notificações
-6. **Previsão de demanda** - ML para prever necessidades futuras
-7. **Versão web** - Flask/Django para acesso remoto
-8. **Banco de dados** - Migrar de Excel para SQLite/PostgreSQL
+## Próximos Passos
+
+### Backlog
+- Hover nos gráficos com tooltip de valor
+- Comparação de dois períodos lado a lado
+- Metas e alertas por volume de SAs
+- Migração para SQLite (fonte de dados)
+- Previsão de demanda (ML simples)
+- Versão web (Flask/FastAPI)
