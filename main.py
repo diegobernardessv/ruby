@@ -863,15 +863,10 @@ class SolicitacoesAppPro:
                 # Dados do cache
                 self.df_original = cache_data['df_original']
                 self.df_status_original = cache_data['df_status_original']
-                self.progress_bar.set(0.8)
+                self.df_filtrado = self.df_original.copy()
+                self.df_status_filtrado = self.df_status_original.copy()
+                self.progress_bar.set(0.5)
                 self.root.update()
-                
-                Toast.show(
-                    self.root,
-                    "⚡ Dados carregados do cache (instantâneo)",
-                    tipo='info',
-                    duration=2500
-                )
             else:
                 # Carregar do Excel (primeira vez ou arquivo modificado)
                 df = pd.read_excel(arquivo, sheet_name='Relatório de Controle de entr')
@@ -949,9 +944,6 @@ class SolicitacoesAppPro:
                 'df_status_original': self.df_status_original
             })
             
-            # Atualizar df_filtrado
-            self.df_filtrado = self.df_original.copy()
-            
             # Para aba Dados: filtrar status (sem EM APROVAÇÃO e PRE-REQUISIÇÃO GERADA)
             status_excluir = ['EM APROVAÇÃO', 'PRE-REQUISIÇÃO GERADA']
             df_dados = self.df_original[~self.df_original['Status'].isin(status_excluir)].copy()
@@ -977,12 +969,20 @@ class SolicitacoesAppPro:
             self.root.after(500, self.progress_bar.pack_forget)  # Esconder após 500ms
             
             # Toast de sucesso
-            Toast.show(
-                self.root,
-                f"Dados carregados! {len(self.df_original)} registros prontos",
-                tipo='success',
-                duration=3000
-            )
+            if cache_data is not None:
+                Toast.show(
+                    self.root,
+                    f"⚡ Cache: {len(self.df_original)} registros carregados instantaneamente",
+                    tipo='info',
+                    duration=3000
+                )
+            else:
+                Toast.show(
+                    self.root,
+                    f"Dados carregados! {len(self.df_original)} registros prontos",
+                    tipo='success',
+                    duration=3000
+                )
             
         except FileNotFoundError:
             self.progress_bar.pack_forget()
