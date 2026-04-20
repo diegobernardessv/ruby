@@ -138,7 +138,11 @@ class SolicitacoesAppPro:
         # Configurações
         self.config_file = 'config.json'
         self.config = self.carregar_config()
-        
+
+        # Jobs de debounce para salvar larguras de colunas
+        self._save_widths_job_dados  = None
+        self._save_widths_job_status = None
+
         # Cache
         self.cache_dir = '.cache'
         if not os.path.exists(self.cache_dir):
@@ -553,6 +557,13 @@ class SolicitacoesAppPro:
             cursor='hand2', corner_radius=8, width=120, height=28
         ).pack(side=tk.LEFT)
 
+        self.dados_contador_label = tk.Label(
+            filtros_frame, text="",
+            font=('Quicksand', 9, 'bold'),
+            bg='white', fg='#7f8c8d'
+        )
+        self.dados_contador_label.pack(side=tk.RIGHT, padx=(0, 15))
+
         # Tabela
         table_frame = tk.Frame(self.aba_dados, bg='white', relief=tk.RAISED, borderwidth=2)
         table_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
@@ -587,7 +598,10 @@ class SolicitacoesAppPro:
         )
         style.configure('Treeview.Heading', font=('Quicksand', 10, 'bold'), background='#34495e', foreground='white')
         style.map('Treeview', background=[('selected', '#3498db')])
-    
+
+        # Persiste larguras quando o usuário redimensiona colunas (debounce 500ms)
+        self.tree.bind('<ButtonRelease-1>', self._on_resize_dados)
+
     # ==================== ABA 2: STATUS DE ATENDIMENTO ====================
     def criar_aba_status_atendimento(self):
         self.aba_status = tk.Frame(self.notebook, bg='#e8f8f5')  # Verde claro
@@ -803,6 +817,13 @@ class SolicitacoesAppPro:
             cursor='hand2', corner_radius=8, width=120, height=28
         ).pack(side=tk.LEFT)
 
+        self.status_contador_label = tk.Label(
+            filtros_status_frame, text="",
+            font=('Quicksand', 9, 'bold'),
+            bg='white', fg='#7f8c8d'
+        )
+        self.status_contador_label.pack(side=tk.RIGHT, padx=(0, 15))
+
         # Tabela
         table_frame = tk.Frame(self.aba_status, bg='white', relief=tk.RAISED, borderwidth=2)
         table_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
@@ -824,7 +845,10 @@ class SolicitacoesAppPro:
         self.status_tree.grid(row=0, column=0, sticky='nsew')
         scroll_y.grid(row=0, column=1, sticky='ns')
         scroll_x.grid(row=1, column=0, sticky='ew')
-    
+
+        # Persiste larguras quando o usuário redimensiona colunas (debounce 500ms)
+        self.status_tree.bind('<ButtonRelease-1>', self._on_resize_status)
+
     # ==================== ABA 3: DASHBOARD ====================
     def criar_aba_dashboard(self):
         self.aba_dashboard = tk.Frame(self.notebook, bg='#fef5e7')  # Amarelo claro
@@ -978,6 +1002,38 @@ class SolicitacoesAppPro:
             if var.get() not in opcoes:
                 var.set("Todos")
 
+    # ---- Persistência de larguras de colunas ----
+
+    def _on_resize_dados(self, _event):
+        """Debounce: agenda salvamento das larguras da tabela Dados."""
+        if self._save_widths_job_dados:
+            self.root.after_cancel(self._save_widths_job_dados)
+        self._save_widths_job_dados = self.root.after(500, self._salvar_larguras_dados)
+
+    def _on_resize_status(self, _event):
+        """Debounce: agenda salvamento das larguras da tabela Status."""
+        if self._save_widths_job_status:
+            self.root.after_cancel(self._save_widths_job_status)
+        self._save_widths_job_status = self.root.after(500, self._salvar_larguras_status)
+
+    def _salvar_larguras_dados(self):
+        """Persiste larguras atuais das colunas da tabela Dados no config.json."""
+        if not hasattr(self, 'tree'):
+            return
+        larguras = {col: self.tree.column(col, 'width') for col in self.tree['columns']}
+        self.config['larguras_colunas'] = larguras
+        self.salvar_config()
+
+    def _salvar_larguras_status(self):
+        """Persiste larguras atuais das colunas da tabela Status no config.json."""
+        if not hasattr(self, 'status_tree'):
+            return
+        larguras = {col: self.status_tree.column(col, 'width') for col in self.status_tree['columns']}
+        self.config['larguras_colunas_status'] = larguras
+        self.salvar_config()
+
+    # ---- Pipelines de filtro unificados ----
+
     def _refresh_tabela_dados(self):
         """Pipeline unificado: aplica todos os filtros e atualiza a tabela da aba Dados."""
         if self.df_filtrado is None:
@@ -1005,6 +1061,15 @@ class SolicitacoesAppPro:
                 df['Solicitante'].str.lower().str.contains(termo, na=False) |
                 df['Codigo'].astype(str).str.lower().str.contains(termo, na=False)
             ]
+
+        # Atualiza contador no frame de filtros
+        n_sas = df['Numero SA'].nunique()
+        n_itens = len(df)
+        if hasattr(self, 'dados_contador_label'):
+            self.dados_contador_label.config(
+                text=f"{n_sas} SA{'s' if n_sas != 1 else ''} | {n_itens} item{'s' if n_itens != 1 else ''}",
+                fg='#27ae60' if n_itens > 0 else '#e74c3c'
+            )
 
         self.atualizar_tabela(df)
 
@@ -1038,6 +1103,15 @@ class SolicitacoesAppPro:
                 df['Solicitante'].str.lower().str.contains(termo, na=False) |
                 df['Codigo'].astype(str).str.lower().str.contains(termo, na=False)
             ]
+
+        # Atualiza contador no frame de filtros
+        n_sas = df['Numero SA'].nunique()
+        n_itens = len(df)
+        if hasattr(self, 'status_contador_label'):
+            self.status_contador_label.config(
+                text=f"{n_sas} SA{'s' if n_sas != 1 else ''} | {n_itens} item{'s' if n_itens != 1 else ''}",
+                fg='#27ae60' if n_itens > 0 else '#e74c3c'
+            )
 
         self.atualizar_tabela_status(df)
 
@@ -1306,7 +1380,13 @@ class SolicitacoesAppPro:
             
             anchor = 'w' if col in ('Descricao', 'Observacao') else 'center'
             self.tree.column(col, width=width, anchor=anchor)
-        
+
+        # Restaura larguras salvas pelo usuário (sobrescreve padrões acima)
+        larguras_salvas = self.config.get('larguras_colunas', {})
+        for col, w in larguras_salvas.items():
+            if col in colunas:
+                self.tree.column(col, width=w)
+
         for idx, row in df.iterrows():
             valores = []
             for col in colunas:
@@ -1322,9 +1402,9 @@ class SolicitacoesAppPro:
                         valores.append(str(valor))
                 else:
                     valores.append(str(valor))
-            
+
             self.tree.insert('', tk.END, values=valores)
-        
+
         self.info_label.config(
             text=f"📊 Exibindo {df['Numero SA'].nunique()} solicitações | "
                  f"Quantidade total de itens: {len(df)}",
@@ -1851,7 +1931,7 @@ DBSolutions Lab - © 2026
             width = larguras.get(col, 120)
             anchor = 'w' if col == 'Descricao' else 'center'
             self.status_tree.column(col, width=width, anchor=anchor)
-            
+
             # Cabeçalhos customizados
             if col == 'Unidade de Medida':
                 self.status_tree.heading(col, text='U.M.')
@@ -1861,7 +1941,13 @@ DBSolutions Lab - © 2026
                 self.status_tree.heading(col, text='Qtd.Solicitada')
             else:
                 self.status_tree.heading(col, text=col)
-        
+
+        # Restaura larguras salvas pelo usuário (sobrescreve padrões acima)
+        larguras_salvas = self.config.get('larguras_colunas_status', {})
+        for col, w in larguras_salvas.items():
+            if col in colunas:
+                self.status_tree.column(col, width=w)
+
         # Inserir dados
         for idx, row in df.iterrows():
             valores = []
@@ -1926,6 +2012,8 @@ DBSolutions Lab - © 2026
         )
         
         if filename:
+            self.root.config(cursor='wait')
+            self.root.update()
             try:
                 self.df_status_filtrado.to_excel(filename, index=False, sheet_name='Status Atendimento')
                 Toast.show(
@@ -1949,6 +2037,8 @@ DBSolutions Lab - © 2026
                     duration=4000
                 )
                 print(f"Erro detalhado na exportação: {e}")
+            finally:
+                self.root.config(cursor='')
     
     # ==================== EXPORTAÇÕES ====================
     def exportar_excel(self):
@@ -1968,12 +2058,14 @@ DBSolutions Lab - © 2026
         )
         
         if filename:
+            self.root.config(cursor='wait')
+            self.root.update()
             try:
                 df_export = self.df_filtrado.copy()
                 df_export['Data Emissao'] = df_export['Data Emissao'].dt.strftime('%d/%m/%Y')
-                
+
                 df_export.to_excel(filename, index=False, sheet_name='Solicitações')
-                
+
                 Toast.show(
                     self.root,
                     f"Excel exportado! {len(df_export)} registros salvos",
@@ -1995,6 +2087,8 @@ DBSolutions Lab - © 2026
                     duration=4000
                 )
                 print(f"Erro detalhado na exportação: {e}")
+            finally:
+                self.root.config(cursor='')
     
     def gerar_hash_arquivo(self, filepath):
         """Gera hash MD5 do arquivo para detectar mudanças"""
@@ -2114,10 +2208,12 @@ DBSolutions Lab - © 2026
         )
         
         if filename:
+            self.root.config(cursor='wait')
+            self.root.update()
             try:
                 with open(filename, 'w', encoding='utf-8') as f:
                     f.write(self.resumo_text.get('1.0', tk.END))
-                
+
                 Toast.show(
                     self.root,
                     "Resumo exportado com sucesso!",
@@ -2139,6 +2235,8 @@ DBSolutions Lab - © 2026
                     duration=4000
                 )
                 print(f"Erro detalhado na exportação: {e}")
+            finally:
+                self.root.config(cursor='')
 
     # ==================== EXPORTAR PDF ====================
     def exportar_pdf(self):
@@ -2164,6 +2262,11 @@ DBSolutions Lab - © 2026
         )
         if not filename:
             return
+
+        self.root.config(cursor='wait')
+        self.root.update()
+        Toast.show(self.root, "Gerando PDF, aguarde...", tipo='info', duration=2000)
+        self.root.update()
 
         import tempfile
         temp_files = []
@@ -2344,6 +2447,7 @@ DBSolutions Lab - © 2026
             Toast.show(self.root, f"Erro ao gerar PDF: {str(e)[:80]}", tipo='error', duration=4000)
             print(f"Erro detalhado PDF: {e}")
         finally:
+            self.root.config(cursor='')
             for _, path in temp_files:
                 try:
                     os.remove(path)
