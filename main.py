@@ -118,6 +118,22 @@ class SolicitacoesAppPro:
         self.filtro_data_inicio = None
         self.filtro_data_fim = None
         self.progress_bar = None
+
+        # Filtros avançados — aba Dados
+        self.filtro_armazem_var     = tk.StringVar(value="Todos")
+        self.filtro_setor_var       = tk.StringVar(value="Todos")
+        self.filtro_solicitante_var = tk.StringVar(value="Todos")
+        self._combo_armazem_dados     = None
+        self._combo_setor_dados       = None
+        self._combo_solicitante_dados = None
+
+        # Filtros avançados — aba Status
+        self.filtro_armazem_status_var     = tk.StringVar(value="Todos")
+        self.filtro_setor_status_var       = tk.StringVar(value="Todos")
+        self.filtro_solicitante_status_var = tk.StringVar(value="Todos")
+        self._combo_armazem_status     = None
+        self._combo_setor_status       = None
+        self._combo_solicitante_status = None
         
         # Configurações
         self.config_file = 'config.json'
@@ -489,7 +505,54 @@ class SolicitacoesAppPro:
             bg='white',
             fg='#7f8c8d'
         ).pack(side=tk.LEFT, padx=(0, 15))
-        
+
+        # Filtros avançados
+        filtros_frame = ctk.CTkFrame(
+            self.aba_dados,
+            corner_radius=10,
+            border_width=2,
+            fg_color='white',
+            border_color='#3498db'
+        )
+        filtros_frame.pack(fill=tk.X, padx=10, pady=(0, 8))
+
+        tk.Label(filtros_frame, text="Filtros:", font=('Quicksand', 10, 'bold'), bg='white').pack(side=tk.LEFT, padx=(15, 10), pady=7)
+
+        tk.Label(filtros_frame, text="Armazém:", font=('Quicksand', 9), bg='white').pack(side=tk.LEFT, padx=(0, 4))
+        self._combo_armazem_dados = ctk.CTkComboBox(
+            filtros_frame, variable=self.filtro_armazem_var,
+            values=["Todos"], state='readonly',
+            font=('Quicksand', 9), width=100, height=28, corner_radius=8, border_width=2,
+            command=lambda _: self._refresh_tabela_dados()
+        )
+        self._combo_armazem_dados.pack(side=tk.LEFT, padx=(0, 15))
+
+        tk.Label(filtros_frame, text="Setor:", font=('Quicksand', 9), bg='white').pack(side=tk.LEFT, padx=(0, 4))
+        self._combo_setor_dados = ctk.CTkComboBox(
+            filtros_frame, variable=self.filtro_setor_var,
+            values=["Todos"], state='readonly',
+            font=('Quicksand', 9), width=210, height=28, corner_radius=8, border_width=2,
+            command=lambda _: self._refresh_tabela_dados()
+        )
+        self._combo_setor_dados.pack(side=tk.LEFT, padx=(0, 15))
+
+        tk.Label(filtros_frame, text="Solicitante:", font=('Quicksand', 9), bg='white').pack(side=tk.LEFT, padx=(0, 4))
+        self._combo_solicitante_dados = ctk.CTkComboBox(
+            filtros_frame, variable=self.filtro_solicitante_var,
+            values=["Todos"], state='readonly',
+            font=('Quicksand', 9), width=160, height=28, corner_radius=8, border_width=2,
+            command=lambda _: self._refresh_tabela_dados()
+        )
+        self._combo_solicitante_dados.pack(side=tk.LEFT, padx=(0, 15))
+
+        ctk.CTkButton(
+            filtros_frame, text="Limpar Filtros",
+            command=self._limpar_filtros_dados,
+            fg_color='#e74c3c', hover_color='#c0392b',
+            text_color='white', font=('Quicksand', 9, 'bold'),
+            cursor='hand2', corner_radius=8, width=120, height=28
+        ).pack(side=tk.LEFT)
+
         # Tabela
         table_frame = tk.Frame(self.aba_dados, bg='white', relief=tk.RAISED, borderwidth=2)
         table_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
@@ -692,7 +755,54 @@ class SolicitacoesAppPro:
             bg='white',
             fg='#7f8c8d'
         ).pack(side=tk.LEFT, padx=(0, 15))
-        
+
+        # Filtros avançados
+        filtros_status_frame = ctk.CTkFrame(
+            self.aba_status,
+            corner_radius=10,
+            border_width=2,
+            fg_color='white',
+            border_color='#27ae60'
+        )
+        filtros_status_frame.pack(fill=tk.X, padx=10, pady=(0, 8))
+
+        tk.Label(filtros_status_frame, text="Filtros:", font=('Quicksand', 10, 'bold'), bg='white').pack(side=tk.LEFT, padx=(15, 10), pady=7)
+
+        tk.Label(filtros_status_frame, text="Armazém:", font=('Quicksand', 9), bg='white').pack(side=tk.LEFT, padx=(0, 4))
+        self._combo_armazem_status = ctk.CTkComboBox(
+            filtros_status_frame, variable=self.filtro_armazem_status_var,
+            values=["Todos"], state='readonly',
+            font=('Quicksand', 9), width=100, height=28, corner_radius=8, border_width=2,
+            command=lambda _: self._refresh_tabela_status()
+        )
+        self._combo_armazem_status.pack(side=tk.LEFT, padx=(0, 15))
+
+        tk.Label(filtros_status_frame, text="Setor:", font=('Quicksand', 9), bg='white').pack(side=tk.LEFT, padx=(0, 4))
+        self._combo_setor_status = ctk.CTkComboBox(
+            filtros_status_frame, variable=self.filtro_setor_status_var,
+            values=["Todos"], state='readonly',
+            font=('Quicksand', 9), width=210, height=28, corner_radius=8, border_width=2,
+            command=lambda _: self._refresh_tabela_status()
+        )
+        self._combo_setor_status.pack(side=tk.LEFT, padx=(0, 15))
+
+        tk.Label(filtros_status_frame, text="Solicitante:", font=('Quicksand', 9), bg='white').pack(side=tk.LEFT, padx=(0, 4))
+        self._combo_solicitante_status = ctk.CTkComboBox(
+            filtros_status_frame, variable=self.filtro_solicitante_status_var,
+            values=["Todos"], state='readonly',
+            font=('Quicksand', 9), width=160, height=28, corner_radius=8, border_width=2,
+            command=lambda _: self._refresh_tabela_status()
+        )
+        self._combo_solicitante_status.pack(side=tk.LEFT, padx=(0, 15))
+
+        ctk.CTkButton(
+            filtros_status_frame, text="Limpar Filtros",
+            command=self._limpar_filtros_status,
+            fg_color='#e74c3c', hover_color='#c0392b',
+            text_color='white', font=('Quicksand', 9, 'bold'),
+            cursor='hand2', corner_radius=8, width=120, height=28
+        ).pack(side=tk.LEFT)
+
         # Tabela
         table_frame = tk.Frame(self.aba_status, bg='white', relief=tk.RAISED, borderwidth=2)
         table_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
@@ -833,6 +943,122 @@ class SolicitacoesAppPro:
         self.resumo_text.insert('1.0', "📄 Resumo Executivo será gerado após carregar os dados")
         self.resumo_text.config(state=tk.DISABLED)
     
+    # ==================== FILTROS AVANÇADOS ====================
+    def _popular_combos_dados(self, df):
+        """Popula os dropdowns de filtro da aba Dados com os valores disponíveis no df."""
+        armazens    = ["Todos"] + sorted(df['Armazem'].dropna().astype(str).unique().tolist())
+        setores     = ["Todos"] + sorted(df['Setor'].dropna().unique().tolist())
+        solicitantes = ["Todos"] + sorted(df['Solicitante'].dropna().unique().tolist())
+
+        for combo, opcoes, var in [
+            (self._combo_armazem_dados,     armazens,    self.filtro_armazem_var),
+            (self._combo_setor_dados,       setores,     self.filtro_setor_var),
+            (self._combo_solicitante_dados, solicitantes, self.filtro_solicitante_var),
+        ]:
+            if combo is None:
+                continue
+            combo.configure(values=opcoes)
+            if var.get() not in opcoes:
+                var.set("Todos")
+
+    def _popular_combos_status(self, df):
+        """Popula os dropdowns de filtro da aba Status com os valores disponíveis no df."""
+        armazens    = ["Todos"] + sorted(df['Armazem'].dropna().astype(str).unique().tolist())
+        setores     = ["Todos"] + sorted(df['Setor'].dropna().unique().tolist())
+        solicitantes = ["Todos"] + sorted(df['Solicitante'].dropna().unique().tolist())
+
+        for combo, opcoes, var in [
+            (self._combo_armazem_status,     armazens,    self.filtro_armazem_status_var),
+            (self._combo_setor_status,       setores,     self.filtro_setor_status_var),
+            (self._combo_solicitante_status, solicitantes, self.filtro_solicitante_status_var),
+        ]:
+            if combo is None:
+                continue
+            combo.configure(values=opcoes)
+            if var.get() not in opcoes:
+                var.set("Todos")
+
+    def _refresh_tabela_dados(self):
+        """Pipeline unificado: aplica todos os filtros e atualiza a tabela da aba Dados."""
+        if self.df_filtrado is None:
+            return
+
+        status_excluir = ['EM APROVAÇÃO', 'PRE-REQUISIÇÃO GERADA']
+        df = self.df_filtrado[~self.df_filtrado['Status'].isin(status_excluir)].copy()
+
+        armazem     = self.filtro_armazem_var.get()
+        setor       = self.filtro_setor_var.get()
+        solicitante = self.filtro_solicitante_var.get()
+
+        if armazem != "Todos":
+            df = df[df['Armazem'].astype(str) == armazem]
+        if setor != "Todos":
+            df = df[df['Setor'] == setor]
+        if solicitante != "Todos":
+            df = df[df['Solicitante'] == solicitante]
+
+        termo = self.search_var.get().strip().lower() if hasattr(self, 'search_var') else ''
+        if termo:
+            df = df[
+                df['Descricao'].str.lower().str.contains(termo, na=False) |
+                df['Setor'].str.lower().str.contains(termo, na=False) |
+                df['Solicitante'].str.lower().str.contains(termo, na=False) |
+                df['Codigo'].astype(str).str.lower().str.contains(termo, na=False)
+            ]
+
+        self.atualizar_tabela(df)
+
+    def _refresh_tabela_status(self):
+        """Pipeline unificado: aplica todos os filtros e atualiza a tabela da aba Status."""
+        if not hasattr(self, 'df_status_filtrado') or self.df_status_filtrado is None:
+            return
+
+        df = self.df_status_filtrado.copy()
+
+        atendimento = self.filtro_atendimento_var.get() if hasattr(self, 'filtro_atendimento_var') else "Todas"
+        if atendimento != "Todas":
+            df = df[df['Atendimento'] == atendimento]
+
+        armazem     = self.filtro_armazem_status_var.get()
+        setor       = self.filtro_setor_status_var.get()
+        solicitante = self.filtro_solicitante_status_var.get()
+
+        if armazem != "Todos":
+            df = df[df['Armazem'].astype(str) == armazem]
+        if setor != "Todos":
+            df = df[df['Setor'] == setor]
+        if solicitante != "Todos":
+            df = df[df['Solicitante'] == solicitante]
+
+        termo = self.status_search_var.get().strip().lower() if hasattr(self, 'status_search_var') else ''
+        if termo:
+            df = df[
+                df['Descricao'].str.lower().str.contains(termo, na=False) |
+                df['Setor'].str.lower().str.contains(termo, na=False) |
+                df['Solicitante'].str.lower().str.contains(termo, na=False) |
+                df['Codigo'].astype(str).str.lower().str.contains(termo, na=False)
+            ]
+
+        self.atualizar_tabela_status(df)
+
+    def _limpar_filtros_dados(self):
+        """Reseta os filtros avançados da aba Dados."""
+        self.filtro_armazem_var.set("Todos")
+        self.filtro_setor_var.set("Todos")
+        self.filtro_solicitante_var.set("Todos")
+        if hasattr(self, 'search_var'):
+            self.search_var.set("")
+        self._refresh_tabela_dados()
+
+    def _limpar_filtros_status(self):
+        """Reseta os filtros avançados da aba Status."""
+        self.filtro_armazem_status_var.set("Todos")
+        self.filtro_setor_status_var.set("Todos")
+        self.filtro_solicitante_status_var.set("Todos")
+        if hasattr(self, 'status_search_var'):
+            self.status_search_var.set("")
+        self._refresh_tabela_status()
+
     # ==================== FUNÇÕES DE DADOS ====================
     def selecionar_arquivo(self):
         filename = filedialog.askopenfilename(
@@ -907,67 +1133,59 @@ class SolicitacoesAppPro:
                 'Observacao': 'Observacao'
             }
             
-            # Mapeamento adicional para aba Status de Atendimento
-            colunas_status_mapeamento = {
-                'Numero SA': 'Numero SA',
-                'Codigo': 'Codigo',
-                'Descricao do Material': 'Descricao',
-                'UM': 'Unidade de Medida',
-                'Armazem': 'Armazem',
-                'Quantidade': 'Quantidade Solicitada',
-                'Qtd. Atendida': 'Qtd. Atendida',
-                'Atendimento': 'Atendimento',
-                'Dt. Emissao': 'Data Emissao',
-                'Dt. Atendido': 'Dt. Atendido',
-                'Setor': 'Setor',
-                'Solicitante': 'Solicitante',
-                'Custo Unitario': 'Custo Unitario',
-                'Custo Total': 'Custo Total'
-            }
+                # Mapeamento adicional para aba Status de Atendimento
+                colunas_status_mapeamento = {
+                    'Numero SA': 'Numero SA',
+                    'Codigo': 'Codigo',
+                    'Descricao do Material': 'Descricao',
+                    'UM': 'Unidade de Medida',
+                    'Armazem': 'Armazem',
+                    'Quantidade': 'Quantidade Solicitada',
+                    'Qtd. Atendida': 'Qtd. Atendida',
+                    'Atendimento': 'Atendimento',
+                    'Dt. Emissao': 'Data Emissao',
+                    'Dt. Atendido': 'Dt. Atendido',
+                    'Setor': 'Setor',
+                    'Solicitante': 'Solicitante',
+                    'Custo Unitario': 'Custo Unitario',
+                    'Custo Total': 'Custo Total'
+                }
+
+                # Criar df_base para abas normais
+                df_base = df_base[list(colunas_mapeamento.keys())]
+                df_base = df_base.rename(columns=colunas_mapeamento)
+                df_base['Data Emissao'] = pd.to_datetime(df_base['Data Emissao'], errors='coerce')
+
+                # Criar df_status_base para aba Status de Atendimento
+                df_status_base = df[~df['Grupo'].isin(grupos_excluir)]
+                df_status_base = df_status_base[list(colunas_status_mapeamento.keys())]
+                df_status_base = df_status_base.rename(columns=colunas_status_mapeamento)
+                df_status_base['Data Emissao'] = pd.to_datetime(df_status_base['Data Emissao'], errors='coerce')
+                df_status_base['Dt. Atendido'] = pd.to_datetime(df_status_base['Dt. Atendido'], errors='coerce')
+
+                # df_original = TODOS os dados (sem grupos, mas COM todos os status)
+                self.df_original = df_base.copy()
+
+                # df_filtrado = inicialmente igual ao df_original (Dashboard usa isso)
+                self.df_filtrado = df_base.copy()
+
+                # Para aba Status de Atendimento: guardar dados completos
+                self.df_status_original = df_status_base.copy()
+                self.df_status_filtrado = df_status_base.copy()
+
+                # Salvar no cache
+                self.salvar_no_cache(arquivo, {
+                    'df_original': self.df_original,
+                    'df_status_original': self.df_status_original
+                })
             
-            # Criar df_base para abas normais
-            df_base = df_base[list(colunas_mapeamento.keys())]
-            df_base = df_base.rename(columns=colunas_mapeamento)
-            df_base['Data Emissao'] = pd.to_datetime(df_base['Data Emissao'], errors='coerce')
-            
-            # Criar df_status_base para aba Status de Atendimento
-            df_status_base = df[~df['Grupo'].isin(grupos_excluir)]
-            df_status_base = df_status_base[list(colunas_status_mapeamento.keys())]
-            df_status_base = df_status_base.rename(columns=colunas_status_mapeamento)
-            df_status_base['Data Emissao'] = pd.to_datetime(df_status_base['Data Emissao'], errors='coerce')
-            df_status_base['Dt. Atendido'] = pd.to_datetime(df_status_base['Dt. Atendido'], errors='coerce')
-            
-            # df_original = TODOS os dados (sem grupos, mas COM todos os status)
-            self.df_original = df_base.copy()
-            
-            # df_filtrado = inicialmente igual ao df_original (Dashboard usa isso)
-            self.df_filtrado = df_base.copy()
-            
-            # Para aba Dados: filtrar status (sem EM APROVAÇÃO e PRE-REQUISIÇÃO GERADA)
-            status_excluir = ['EM APROVAÇÃO', 'PRE-REQUISIÇÃO GERADA']
-            df_dados = df_base[~df_base['Status'].isin(status_excluir)].copy()
-            
-            # Para aba Status de Atendimento: guardar dados completos
-            self.df_status_original = df_status_base.copy()
-            self.df_status_filtrado = df_status_base.copy()
-            
-            # Salvar no cache
-            self.salvar_no_cache(arquivo, {
-                'df_original': self.df_original,
-                'df_status_original': self.df_status_original
-            })
-            
-            # Para aba Dados: filtrar status (sem EM APROVAÇÃO e PRE-REQUISIÇÃO GERADA)
-            status_excluir = ['EM APROVAÇÃO', 'PRE-REQUISIÇÃO GERADA']
-            df_dados = self.df_original[~self.df_original['Status'].isin(status_excluir)].copy()
-            
-            # Atualizar tabela da aba Dados (COM filtro de status)
+            # Popular combos e atualizar tabelas via pipeline
             self.progress_bar.set(0.6)
             self.root.update()
-            self.atualizar_tabela(df_dados)
-            
-            # Atualizar aba Status de Atendimento
-            self.atualizar_tabela_status(self.df_status_filtrado)
+            self._popular_combos_dados(self.df_filtrado)
+            self._popular_combos_status(self.df_status_filtrado)
+            self._refresh_tabela_dados()
+            self._refresh_tabela_status()
             
             # Atualizar Dashboard/Análise/Resumo (SEM filtro de status - usa df_filtrado)
             self.progress_bar.set(0.8)
@@ -1062,31 +1280,32 @@ class SolicitacoesAppPro:
             self.tree.heading(col, text=col)
             
             if col == 'Descricao':
-                width = 400
+                width = 350
             elif col == 'Observacao':
-                width = 200
+                width = 400
             elif col == 'Setor':
-                width = 325
+                width = 320
             elif col == 'Solicitante':
-                width = 150
+                width = 120
             elif col == 'Status':
-                width = 145
+                width = 140
             elif col == 'Data Emissao':
-                width = 70
+                width = 90
                 self.tree.heading(col, text='Dt.Emissão')
             elif col in ['Numero SA', 'Codigo']:
                 width = 90
             elif col == 'Armazem':
-                width = 100
+                width = 60
             elif col == 'Quantidade':
-                width = 90
+                width = 80
             elif col == 'Unidade de Medida':
-                width = 50
+                width = 45
                 self.tree.heading(col, text='U.M.')
             else:
                 width = 120
             
-            self.tree.column(col, width=width, anchor='w')
+            anchor = 'w' if col in ('Descricao', 'Observacao') else 'center'
+            self.tree.column(col, width=width, anchor=anchor)
         
         for idx, row in df.iterrows():
             valores = []
@@ -1171,10 +1390,6 @@ class SolicitacoesAppPro:
                 (self.df_original['Data Emissao'] <= data_fim_pd)
             ]
             
-            # Para aba Dados: aplicar filtro de status também
-            status_excluir = ['EM APROVAÇÃO', 'PRE-REQUISIÇÃO GERADA']
-            df_dados = df_filtrado_data[~df_filtrado_data['Status'].isin(status_excluir)]
-            
             # df_filtrado = usado por Dashboard/Análise/Resumo (SEM filtro de status)
             self.df_filtrado = df_filtrado_data.copy()
             
@@ -1186,13 +1401,13 @@ class SolicitacoesAppPro:
                 ]
                 self.df_status_filtrado = df_status_filtrado_data.copy()
             
-            # Atualizar tabela da aba Dados (COM filtro de status)
-            self.atualizar_tabela(df_dados)
-            
-            # Atualizar aba Status de Atendimento
+            # Popular combos e atualizar tabelas via pipeline
+            self._popular_combos_dados(self.df_filtrado)
             if hasattr(self, 'df_status_filtrado'):
-                self.atualizar_tabela_status(self.df_status_filtrado)
-            
+                self._popular_combos_status(self.df_status_filtrado)
+            self._refresh_tabela_dados()
+            self._refresh_tabela_status()
+
             # Atualizar Dashboard/Análise/Resumo (SEM filtro de status)
             self.atualizar_dashboard()
             self.atualizar_analise()
@@ -1243,23 +1458,19 @@ class SolicitacoesAppPro:
         self.filtro_data_inicio = None
         self.filtro_data_fim = None
         
-        # Para aba Dados: filtrar status (excluir 'EM APROVAÇÃO' e 'PRE-REQUISIÇÃO GERADA')
-        status_excluir = ['EM APROVAÇÃO', 'PRE-REQUISIÇÃO GERADA']
-        df_dados = self.df_original[~self.df_original['Status'].isin(status_excluir)]
-        
         # Para Dashboard/Análise/Resumo: usar df_original completo
         self.df_filtrado = self.df_original.copy()
-        
+
         # Restaurar dados originais da aba Status de Atendimento
         if hasattr(self, 'df_status_original'):
             self.df_status_filtrado = self.df_status_original.copy()
-        
-        # Atualizar apenas a tabela da aba Dados com filtro de status
-        self.atualizar_tabela(df_dados)
-        
-        # Atualizar aba Status de Atendimento
+
+        # Popular combos e atualizar tabelas via pipeline
+        self._popular_combos_dados(self.df_filtrado)
         if hasattr(self, 'df_status_filtrado'):
-            self.atualizar_tabela_status(self.df_status_filtrado)
+            self._popular_combos_status(self.df_status_filtrado)
+        self._refresh_tabela_dados()
+        self._refresh_tabela_status()
         
         # Dashboard/Análise/Resumo usam df_filtrado (sem filtro de status)
         self.atualizar_dashboard()
@@ -1599,26 +1810,7 @@ DBSolutions Lab - © 2026
     
     # ==================== BUSCA RÁPIDA ====================
     def filtrar_tabela_busca(self):
-        """Filtrar tabela em tempo real baseado na busca"""
-        if self.df_filtrado is None or self.df_filtrado.empty:
-            return
-        
-        termo_busca = self.search_var.get().strip().lower()
-        
-        if not termo_busca:
-            # Se busca vazia, mostrar todos os dados filtrados
-            self.atualizar_tabela(self.df_filtrado)
-            return
-        
-        # Filtrar por Descrição, Setor, Solicitante ou Código
-        df_busca = self.df_filtrado[
-            self.df_filtrado['Descricao'].str.lower().str.contains(termo_busca, na=False) |
-            self.df_filtrado['Setor'].str.lower().str.contains(termo_busca, na=False) |
-            self.df_filtrado['Solicitante'].str.lower().str.contains(termo_busca, na=False) |
-            self.df_filtrado['Codigo'].astype(str).str.lower().str.contains(termo_busca, na=False)
-        ]
-        
-        self.atualizar_tabela(df_busca)
+        self._refresh_tabela_dados()
     
     # ==================== ABA STATUS DE ATENDIMENTO - FUNÇÕES ====================
     def atualizar_tabela_status(self, df):
@@ -1657,7 +1849,8 @@ DBSolutions Lab - © 2026
         
         for col in colunas:
             width = larguras.get(col, 120)
-            self.status_tree.column(col, width=width, anchor='w')
+            anchor = 'w' if col == 'Descricao' else 'center'
+            self.status_tree.column(col, width=width, anchor=anchor)
             
             # Cabeçalhos customizados
             if col == 'Unidade de Medida':
@@ -1710,46 +1903,10 @@ DBSolutions Lab - © 2026
         self.kpi_nao_atendidas.config(text=f"❌ Não Atendidas: {nao_atendidas} ({perc_nao_atendidas:.1f}%)")
     
     def aplicar_filtro_atendimento(self):
-        """Filtrar por status de atendimento"""
-        if not hasattr(self, 'df_status_filtrado') or self.df_status_filtrado is None:
-            return
-        
-        filtro = self.filtro_atendimento_var.get()
-        
-        if filtro == "Todas":
-            df_filtrado = self.df_status_filtrado.copy()
-        else:
-            df_filtrado = self.df_status_filtrado[self.df_status_filtrado['Atendimento'] == filtro]
-        
-        self.atualizar_tabela_status(df_filtrado)
-    
+        self._refresh_tabela_status()
+
     def filtrar_status_busca(self):
-        """Filtrar tabela de status em tempo real baseado na busca"""
-        if not hasattr(self, 'df_status_filtrado') or self.df_status_filtrado is None or self.df_status_filtrado.empty:
-            return
-        
-        termo_busca = self.status_search_var.get().strip().lower()
-        
-        # Aplicar filtro de status de atendimento primeiro
-        filtro = self.filtro_atendimento_var.get()
-        if filtro == "Todas":
-            df_base = self.df_status_filtrado.copy()
-        else:
-            df_base = self.df_status_filtrado[self.df_status_filtrado['Atendimento'] == filtro]
-        
-        if not termo_busca:
-            self.atualizar_tabela_status(df_base)
-            return
-        
-        # Filtrar por Descrição, Setor, Solicitante ou Código
-        df_busca = df_base[
-            df_base['Descricao'].str.lower().str.contains(termo_busca, na=False) |
-            df_base['Setor'].str.lower().str.contains(termo_busca, na=False) |
-            df_base['Solicitante'].str.lower().str.contains(termo_busca, na=False) |
-            df_base['Codigo'].astype(str).str.lower().str.contains(termo_busca, na=False)
-        ]
-        
-        self.atualizar_tabela_status(df_busca)
+        self._refresh_tabela_status()
     
     def exportar_status_excel(self):
         """Exportar dados da aba Status de Atendimento para Excel"""
