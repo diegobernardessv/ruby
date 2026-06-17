@@ -1,6 +1,6 @@
-# Python do Zero ao Avançado — Aprendendo com o Projeto Zeus
+# Python do Zero ao Avançado — Aprendendo com o Projeto Rubi
 
-Este documento usa o `main.py` do sistema Zeus como base de ensino. Cada conceito é explicado
+Este documento usa o `main.py` do sistema Rubi como base de ensino. Cada conceito é explicado
 à medida que aparece no código real. Você vai entender não só o *que* cada linha faz, mas
 o *porquê* de cada decisão.
 
@@ -13,7 +13,7 @@ o *porquê* de cada decisão.
 3. [O ponto de partida — o bloco `if __name__ == "__main__"`](#3-o-ponto-de-partida--o-bloco-if-__name__--__main__)
 4. [Imports — o que são, por que existem](#4-imports--o-que-são-por-que-existem)
 5. [Funções — o bloco de construção básico](#5-funções--o-bloco-de-construção-básico)
-6. [Orientação a Objetos (OOP) — o coração do Zeus](#6-orientação-a-objetos-oop--o-coração-do-zeus)
+6. [Orientação a Objetos (OOP) — o coração do Rubi](#6-orientação-a-objetos-oop--o-coração-do-rubi)
 7. [A classe `Toast` — método estático e design enxuto](#7-a-classe-toast--método-estático-e-design-enxuto)
 8. [A classe `SolicitacoesAppPro` — a aplicação inteira](#8-a-classe-solicitacoesapppro--a-aplicação-inteira)
 9. [Tkinter — construindo janelas em Python](#9-tkinter--construindo-janelas-em-python)
@@ -22,22 +22,22 @@ o *porquê* de cada decisão.
 12. [Sistema de Cache com parquet e hashlib](#12-sistema-de-cache-com-parquet-e-hashlib)
 13. [Configurações persistentes com JSON](#13-configurações-persistentes-com-json)
 14. [Tratamento de Erros — o profissional não deixa o programa travar](#14-tratamento-de-erros--o-profissional-não-deixa-o-programa-travar)
-15. [Padrões avançados usados no Zeus](#15-padrões-avançados-usados-no-zeus)
+15. [Padrões avançados usados no Rubi](#15-padrões-avançados-usados-no-rubi)
 16. [Exportação de dados — Excel, TXT e PDF](#16-exportação-de-dados--excel-txt-e-pdf)
 17. [Como montar um projeto assim do zero](#17-como-montar-um-projeto-assim-do-zero)
-18. [Mapa mental do Zeus](#18-mapa-mental-do-zeus)
+18. [Mapa mental do Rubi](#18-mapa-mental-do-rubi)
 
 ---
 
 ## 1. Como ler este documento
 
-Cada seção apresenta um conceito Python e mostra onde ele aparece no Zeus. Os blocos de código
+Cada seção apresenta um conceito Python e mostra onde ele aparece no Rubi. Os blocos de código
 são retirados diretamente do `main.py` — você pode abrir o arquivo ao lado e acompanhar.
 
 Convenção usada aqui:
 
 - **Conceito** — explicação didática do conceito Python
-- **No Zeus** — como o conceito aparece no projeto real
+- **No Rubi** — como o conceito aparece no projeto real
 - **Por que assim** — a decisão de design por trás da escolha
 
 ---
@@ -48,8 +48,8 @@ Antes de digitar a primeira linha, todo projeto profissional começa com três p
 
 ### Qual problema estou resolvendo?
 
-O Zeus resolve um problema muito específico: Elizeus precisava visualizar e analisar as
-solicitações ao armazém que vinham de uma planilha Excel. Antes do Zeus, ele abria o Excel,
+O Rubi resolve um problema muito específico: o usuário precisava visualizar e analisar as
+solicitações ao armazém que vinham de uma planilha Excel. Antes do Rubi, ele abria o Excel,
 filtrava manualmente, e tentava entender os dados sem nenhum gráfico ou resumo automático.
 
 A solução: uma aplicação desktop que lê o Excel, mostra os dados em tabelas, aplica filtros,
@@ -57,7 +57,7 @@ gera gráficos e exporta relatórios — tudo com um clique.
 
 ### Quem vai usar?
 
-Elizeus, um usuário não técnico. Isso determina decisões de design:
+Um usuário não técnico. Isso determina decisões de design:
 - Interface visual, não linha de comando
 - Botões com rótulos claros
 - Notificações amigáveis (Toast) em vez de erros técnicos
@@ -76,7 +76,7 @@ ControladorSA/
 ```
 
 Projetos simples começam em um único arquivo. Você só separa em módulos quando o arquivo
-cresce além de ~1000 linhas e começa a ficar difícil de navegar. O Zeus tem ~2600 linhas
+cresce além de ~1000 linhas e começa a ficar difícil de navegar. O Rubi tem ~2600 linhas
 num único arquivo — isso é aceitável para uma aplicação desktop de pequeno porte.
 
 ---
@@ -115,7 +115,7 @@ Imagine que você escreveu uma função útil em `main.py` e quer reutilizá-la 
 Sem o `if __name__ == "__main__"`, importar `main` abriria a janela da aplicação
 automaticamente — o que é um comportamento indesejado.
 
-### A sequência de inicialização do Zeus
+### A sequência de inicialização do Rubi
 
 1. `_registrar_fontes()` — registra as fontes Quicksand no sistema operacional
 2. `ctk.set_appearance_mode("light")` — configura o tema do CustomTkinter
@@ -172,7 +172,7 @@ import pandas as pd
 pd.read_excel(...)  # "pd" em vez de "pandas"
 ```
 
-### Classificando os imports do Zeus
+### Classificando os imports do Rubi
 
 | Import | Tipo | Para que serve |
 |--------|------|----------------|
@@ -265,9 +265,9 @@ se não existisse).
 
 ---
 
-## 6. Orientação a Objetos (OOP) — o coração do Zeus
+## 6. Orientação a Objetos (OOP) — o coração do Rubi
 
-Orientação a objetos é o paradigma de programação mais usado em projetos reais. O Zeus usa
+Orientação a objetos é o paradigma de programação mais usado em projetos reais. O Rubi usa
 OOP com duas classes: `Toast` e `SolicitacoesAppPro`.
 
 ### O que é uma classe?
@@ -289,10 +289,10 @@ class Pessoa:
 
 # Criando objetos (instâncias)
 diego = Pessoa("Diego", 25)
-elizeus = Pessoa("Elizeus", 30)
+maria = Pessoa("Maria", 30)
 
 print(diego.saudar())    # "Olá, meu nome é Diego"
-print(elizeus.saudar())  # "Olá, meu nome é Elizeus"
+print(maria.saudar())    # "Olá, meu nome é Maria"
 ```
 
 ### O método `__init__` — o construtor
@@ -305,7 +305,7 @@ precisa ter `self` como primeiro parâmetro — o Python passa isso automaticame
 
 ### Por que usar classes em vez de funções simples?
 
-Para o Zeus, a aplicação precisa manter **estado** ao longo de toda a execução:
+Para o Rubi, a aplicação precisa manter **estado** ao longo de toda a execução:
 - Qual arquivo Excel está carregado
 - Qual filtro de data está ativo
 - Quais dados estão no DataFrame
@@ -462,7 +462,7 @@ não uma referência — sem o `lambda`, o valor seria capturado apenas na últi
 class SolicitacoesAppPro:
     def __init__(self, root):
         self.root = root
-        self.root.title("⚡ Zeus - Sistema de Controle de Solicitações")
+        self.root.title("♦ Rubi - Sistema de Controle de Solicitações")
         self.root.geometry("1600x900")
         self.root.configure(bg='#f0f0f0')
         
@@ -477,7 +477,7 @@ class SolicitacoesAppPro:
         self.filtro_solicitante_var = tk.StringVar(value="Todos")
         # ...
         
-        _app_data = os.path.join(os.environ.get('APPDATA', os.path.expanduser('~')), 'ZeusApp')
+        _app_data = os.path.join(os.environ.get('APPDATA', os.path.expanduser('~')), 'RubiApp')
         os.makedirs(_app_data, exist_ok=True)
         self.config_file = os.path.join(_app_data, 'config.json')
         self.config = self.carregar_config()
@@ -493,7 +493,7 @@ class SolicitacoesAppPro:
 
 ### Inicializando o estado da aplicação
 
-O `__init__` do Zeus faz seis coisas:
+O `__init__` do Rubi faz seis coisas:
 
 1. **Configura a janela** — título, tamanho, cor de fundo
 2. **Inicializa DataFrames como `None`** — ainda não há dados carregados
@@ -505,7 +505,7 @@ O `__init__` do Zeus faz seis coisas:
 ### Caminhos portáveis com `%APPDATA%`
 
 ```python
-_app_data = os.path.join(os.environ.get('APPDATA', os.path.expanduser('~')), 'ZeusApp')
+_app_data = os.path.join(os.environ.get('APPDATA', os.path.expanduser('~')), 'RubiApp')
 os.makedirs(_app_data, exist_ok=True)
 self.config_file = os.path.join(_app_data, 'config.json')
 ```
@@ -556,7 +556,7 @@ Outros tipos: `IntVar`, `BooleanVar`, `DoubleVar`.
 
 ## 9. Tkinter — construindo janelas em Python
 
-Tkinter é a biblioteca de interface gráfica incluída no Python. O Zeus usa Tkinter puro
+Tkinter é a biblioteca de interface gráfica incluída no Python. O Rubi usa Tkinter puro
 e CustomTkinter (que adiciona aparência moderna).
 
 ### Os dois sistemas de layout
@@ -601,7 +601,7 @@ header_content.place(relx=0.5, rely=0.5, anchor='center')
 
 `relx=0.5, rely=0.5` — 50% da largura e altura do pai
 `anchor='center'` — o ponto de ancoragem é o centro do widget
-Usado no Zeus apenas para centralizar o cabeçalho dentro da faixa azul.
+Usado no Rubi apenas para centralizar o cabeçalho dentro da faixa escura.
 
 ### Hierarquia de widgets
 
@@ -794,7 +794,7 @@ df['Dia Semana'] = df['Data Emissao'].dt.day_name()
 ### Derivando colunas com `numpy.select`
 
 Às vezes uma coluna não existe no arquivo — ela precisa ser calculada a partir de outras.
-O Zeus faz isso com a coluna `Atendimento`, que replicava uma fórmula Excel:
+O Rubi faz isso com a coluna `Atendimento`, que replicava uma fórmula Excel:
 
 ```
 =SE(S=H; "TOTALMENTE ATENDIDA"; SE(E(S<H; S<>0); "PARCIALMENTE ATENDIDA"; SE(T=0; "NÃO ATENDIDA"; "")))
@@ -908,7 +908,7 @@ def criar_grafico_top_setores(self, parent):
 
 ### A ponte entre Matplotlib e Tkinter
 
-Normalmente, `plt.show()` abre uma janela separada do Matplotlib. No Zeus, usamos
+Normalmente, `plt.show()` abre uma janela separada do Matplotlib. No Rubi, usamos
 `FigureCanvasTkAgg` — um "canvas" que renderiza o gráfico dentro de um widget Tkinter.
 
 Fluxo:
@@ -958,7 +958,7 @@ def atualizar_dashboard(self):
         widget.destroy()
 ```
 
-Cada vez que o filtro muda, o Zeus **destrói todos os widgets filhos** do frame do
+Cada vez que o filtro muda, o Rubi **destrói todos os widgets filhos** do frame do
 dashboard e recria tudo do zero. Essa é a abordagem mais simples: em vez de tentar
 atualizar gráficos existentes, você apaga e redesenha.
 
@@ -968,7 +968,7 @@ atualizar gráficos existentes, você apaga e redesenha.
 
 ## 12. Sistema de Cache com parquet e hashlib
 
-O cache é uma das funcionalidades mais interessantes do Zeus do ponto de vista técnico.
+O cache é uma das funcionalidades mais interessantes do Rubi do ponto de vista técnico.
 
 ### O problema
 
@@ -1051,7 +1051,7 @@ def carregar_do_cache(self, arquivo):
 3. **Eficiência** — armazenamento colunar com compressão automática. Geralmente mais compacto
    que pickle para DataFrames com colunas repetitivas (textos, categorias).
 
-O cache do Zeus usa três arquivos por entrada:
+O cache do Rubi usa três arquivos por entrada:
 - `{hash}_original.parquet` — DataFrame principal (solicitações)
 - `{hash}_status.parquet` — DataFrame de status de atendimento
 - `{hash}.json` — metadados (hash do Excel, timestamp)
@@ -1157,7 +1157,7 @@ for chave in ('larguras_colunas', 'larguras_colunas_status'):
         }
 ```
 
-`config.json` é escrito pelo próprio Zeus, mas pode ser editado manualmente ou corrompido.
+`config.json` é escrito pelo próprio Rubi, mas pode ser editado manualmente ou corrompido.
 Se alguém colocar `{"larguras_colunas": "texto"}`, o Tkinter tentaria usar essa string como
 largura de coluna e travaria com `TclError`.
 
@@ -1302,7 +1302,7 @@ te permite:
 
 ---
 
-## 15. Padrões avançados usados no Zeus
+## 15. Padrões avançados usados no Rubi
 
 ### Pipeline de filtros — separação de responsabilidades
 
@@ -1375,7 +1375,7 @@ def exportar_pdf(self):
         return
 ```
 
-Em vez de importar `fpdf` no topo do arquivo, o Zeus importa apenas quando o usuário
+Em vez de importar `fpdf` no topo do arquivo, o Rubi importa apenas quando o usuário
 clica em "Exportar PDF". Vantagens:
 - Se `fpdf2` não estiver instalado, a aplicação inicia normalmente (erro só ao tentar usar)
 - O tempo de inicialização é menor (uma biblioteca a menos para carregar)
@@ -1392,12 +1392,12 @@ tmp.close()
 figuras.append(("Top 10 Setores", tmp.name))
 ```
 
-Para incluir gráficos no PDF, o Zeus precisa salvá-los como imagens. Usa-se `tempfile`
+Para incluir gráficos no PDF, o Rubi precisa salvá-los como imagens. Usa-se `tempfile`
 para criar arquivos temporários — o sistema operacional sabe onde colocá-los e você
 não precisa gerenciar o caminho.
 
 `delete=False` é necessário porque o arquivo precisa existir depois que você fechar.
-O Zeus limpa os temporários no bloco `finally`:
+O Rubi limpa os temporários no bloco `finally`:
 
 ```python
 finally:
@@ -1494,13 +1494,13 @@ pdf.add_font("Quicksand", style="B", fname=font_bold)
 
 pdf.add_page()
 
-pdf.set_fill_color(52, 152, 219)   # cor de fundo RGB
-pdf.rect(0, 0, 210, 30, 'F')      # retângulo preenchido (cabeçalho azul)
+pdf.set_fill_color(220, 20, 60)    # cor de fundo RGB
+pdf.rect(0, 0, 210, 30, 'F')      # retângulo preenchido (cabeçalho carmesim)
 
 pdf.set_xy(15, 7)                  # posicionar cursor
-pdf.set_text_color(255, 215, 0)    # cor dourada
+pdf.set_text_color(255, 255, 255)  # cor branca
 pdf.set_font("Quicksand", "B", 17)
-pdf.cell(0, 9, "ZEUS - Sistema...", ln=True)
+pdf.cell(0, 9, "RUBI - Sistema...", ln=True)
 
 pdf.output(filename)
 ```
@@ -1526,7 +1526,7 @@ Antes de código:
 3. Quem usa? (técnico ou não técnico — determina a interface)
 4. Que plataforma? (web, desktop, linha de comando?)
 
-Para o Zeus: entrada = Excel, saída = tabelas + gráficos + PDF, usuário não técnico,
+Para o Rubi: entrada = Excel, saída = tabelas + gráficos + PDF, usuário não técnico,
 plataforma desktop Windows.
 
 ### Fase 2 — Escolher a stack (meio dia)
@@ -1567,7 +1567,7 @@ Isso é a base. A partir daqui você adiciona uma coisa de cada vez.
 
 ### Fase 4 — Implementar feature por feature
 
-Ordem recomendada para um sistema como o Zeus:
+Ordem recomendada para um sistema como o Rubi:
 
 **1. Carregamento de dados**
 ```python
@@ -1632,7 +1632,7 @@ O executável gerado em `dist/` roda sem precisar de Python instalado.
 ### Onde começo? Onde termino?
 
 **Começo:** na pergunta "o que o usuário consegue fazer com isso?". A primeira feature
-deve ser a mais importante. No Zeus: carregar um Excel e ver os dados na tela. Tudo mais
+deve ser a mais importante. No Rubi: carregar um Excel e ver os dados na tela. Tudo mais
 é incremento.
 
 **Termino:** quando o produto resolve o problema para o qual foi criado. Um sistema que
@@ -1641,7 +1641,7 @@ extras podem sempre ser adicionadas depois.
 
 ---
 
-## 18. Mapa mental do Zeus
+## 18. Mapa mental do Rubi
 
 ```
 main.py
@@ -1725,7 +1725,7 @@ main.py
 
 ## Conceitos Python por nível
 
-### Básico (entender antes de mexer no Zeus)
+### Básico (entender antes de mexer no Rubi)
 - Variáveis e tipos (int, str, float, bool, None)
 - Condicionais (if/elif/else)
 - Laços (for, while)
@@ -1733,7 +1733,7 @@ main.py
 - Funções com parâmetros e retorno
 - Abertura e leitura de arquivos
 
-### Intermediário (o que você vê no Zeus)
+### Intermediário (o que você vê no Rubi)
 - Classes e objetos (`__init__`, `self`, métodos)
 - Herança (o CustomTkinter usa extensivamente)
 - Tratamento de erros (`try/except/finally`)
@@ -1743,7 +1743,7 @@ main.py
 - Módulos e imports
 - Variáveis com valor padrão
 
-### Avançado (o que torna o Zeus robusto)
+### Avançado (o que torna o Rubi robusto)
 - Método estático (`@staticmethod`)
 - `lambda` e funções como argumentos
 - `iter()` e iteradores customizados
@@ -1760,5 +1760,5 @@ main.py
 
 ---
 
-*Documento gerado para o projeto Zeus — DBSolutions Lab © 2026*
+*Documento gerado para o projeto Rubi — DBSolutions Lab © 2026*
 *Baseado em `main.py` — versão 2.3 (auditoria de segurança aplicada)*

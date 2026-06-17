@@ -1,4 +1,4 @@
-# Roadmap - Zeus: Sistema Elizeus de Controle de Solicitações
+# Roadmap - Rubi: Sistema de Controle de Solicitações
 
 **Projeto:** ControladorSA  
 **Empresa:** DBSolutions Lab  
@@ -50,14 +50,14 @@ Sistema desktop para análise e controle de solicitações ao armazém, com inte
 
 ### v2.2 — Exportação Avançada (Próxima)
 
-**Objetivo:** Permitir que Elizeus compartilhe os dados em qualquer formato.
+**Objetivo:** Permitir compartilhar os dados em qualquer formato.
 
 **Prioridade: alta**
 
 - [ ] Exportar PDF do Resumo Executivo (texto + KPIs)
 - [ ] Exportar relatório PDF completo (todas as abas + gráficos)
 - [ ] Exportar gráficos individualmente como PNG
-- [ ] Branding Zeus no cabeçalho dos relatórios exportados
+- [ ] Branding Rubi no cabeçalho dos relatórios exportados
 
 **Dependências:** `reportlab` ou `fpdf2` para PDF
 

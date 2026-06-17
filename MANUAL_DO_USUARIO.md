@@ -1,4 +1,4 @@
-# Manual do Usuário — Zeus ⚡
+# Manual do Usuário — Rubi ♦
 ### Sistema de Controle de Solicitações ao Armazém
 
 **Versão 2.3 | DBSolutions Lab**
@@ -7,7 +7,7 @@
 
 ## Sumário
 
-1. [O que é o Zeus?](#1-o-que-é-o-zeus)
+1. [O que é o Rubi?](#1-o-que-é-o-rubi)
 2. [Abrindo o programa](#2-abrindo-o-programa)
 3. [Carregando os dados](#3-carregando-os-dados)
 4. [Filtrando por período](#4-filtrando-por-período)
@@ -21,9 +21,9 @@
 
 ---
 
-## 1. O que é o Zeus?
+## 1. O que é o Rubi?
 
-O **Zeus** é um sistema desenvolvido especialmente para facilitar o controle e a análise das solicitações feitas ao armazém. Em vez de abrir planilhas enormes no Excel e tentar entender os números sozinho, o Zeus faz todo esse trabalho por você.
+O **Rubi** é um sistema desenvolvido especialmente para facilitar o controle e a análise das solicitações feitas ao armazém. Em vez de abrir planilhas enormes no Excel e tentar entender os números sozinho, o Rubi faz todo esse trabalho por você.
 
 Com ele você consegue:
 
@@ -33,44 +33,44 @@ Com ele você consegue:
 - Filtrar informações por data, setor, armazém ou solicitante com poucos cliques
 - Gerar relatórios completos em Excel, TXT ou PDF para compartilhar com gestores
 
-O Zeus é o seu painel de controle do almoxarifado.
+O Rubi é o seu painel de controle do almoxarifado.
 
 ---
 
 ## 2. Abrindo o programa
 
-Clique duas vezes no arquivo **ZeusApp.exe** (ou no atalho na área de trabalho). A janela do programa vai abrir automaticamente.
+Clique duas vezes no arquivo **RubiApp.exe** (ou no atalho na área de trabalho). A janela do programa vai abrir automaticamente.
 
 Você vai ver a tela principal com:
 
-- Um **cabeçalho escuro** com o nome "⚡ Zeus" em dourado no topo
+- Um **cabeçalho escuro** com o nome "♦ Rubi" em carmesim no topo
 - Um **painel de controle** com campos para carregar o arquivo e filtrar por data
 - As **cinco abas** com as diferentes visões dos dados (elas aparecem assim que você carregar a planilha)
 
-> **Dica:** O Zeus lembra o último arquivo que você usou. Na próxima vez que abrir o programa, o nome do arquivo já vai estar preenchido automaticamente.
+> **Dica:** O Rubi lembra o último arquivo que você usou. Na próxima vez que abrir o programa, o nome do arquivo já vai estar preenchido automaticamente.
 
 ---
 
 ## 3. Carregando os dados
 
-Antes de ver qualquer informação, você precisa indicar ao Zeus qual planilha Excel ele deve ler.
+Antes de ver qualquer informação, você precisa indicar ao Rubi qual planilha Excel ele deve ler.
 
 ### Passo a passo:
 
-**1. Localize o campo "Arquivo"** no painel de controle (logo abaixo do cabeçalho dourado).
+**1. Localize o campo "Arquivo"** no painel de controle (logo abaixo do cabeçalho escuro).
 
-**2. Clique no botão "Procurar..."** (azul, ao lado do campo de arquivo).
+**2. Clique no botão "Procurar..."** (carmesim, ao lado do campo de arquivo).
    - Uma janela vai abrir para você navegar pelas pastas do computador.
    - Selecione a planilha Excel do sistema (arquivo `.xlsx` ou `.xls`) e clique em **Abrir**.
 
 **3. Clique no botão verde "🔄 Carregar Dados"**.
-   - O Zeus vai ler o arquivo e processar as informações.
+   - O Rubi vai ler o arquivo e processar as informações.
    - Uma barra de progresso vai aparecer enquanto os dados são carregados.
    - Quando terminar, uma notificação verde vai aparecer no canto da tela confirmando o sucesso.
 
 Pronto. Todas as abas serão atualizadas automaticamente com os dados da planilha.
 
-> **Nota sobre velocidade:** O Zeus possui um sistema de cache inteligente. Se você carregar o mesmo arquivo duas vezes sem alterá-lo, a segunda carga será quase instantânea, pois os dados já estão em memória.
+> **Nota sobre velocidade:** O Rubi possui um sistema de cache inteligente. Se você carregar o mesmo arquivo duas vezes sem alterá-lo, a segunda carga será quase instantânea, pois os dados já estão em memória.
 
 ---
 
@@ -135,7 +135,7 @@ Os menus de cada filtro são preenchidos automaticamente com os valores que exis
 
 ### Ajustando as colunas
 
-As colunas da tabela podem ser redimensionadas arrastando as bordas entre os cabeçalhos. O Zeus salva automaticamente a largura que você definiu para a próxima vez que abrir o programa.
+As colunas da tabela podem ser redimensionadas arrastando as bordas entre os cabeçalhos. O Rubi salva automaticamente a largura que você definiu para a próxima vez que abrir o programa.
 
 ### Exportando esta tabela
 
@@ -173,7 +173,7 @@ O botão **"💾 Exportar para Excel"** no canto superior direito exporta exatam
 
 ## 7. Aba: Dashboard
 
-O Dashboard é a visão gerencial do Zeus. Ele transforma os números da planilha em indicadores e gráficos prontos, sem precisar de nenhuma configuração.
+O Dashboard é a visão gerencial do Rubi. Ele transforma os números da planilha em indicadores e gráficos prontos, sem precisar de nenhuma configuração.
 
 ### Os 5 cartões de KPI
 
@@ -238,7 +238,7 @@ O relatório é atualizado automaticamente toda vez que você muda o período ou
 
 ## 10. Exportando relatórios
 
-O Zeus permite exportar os dados em três formatos diferentes.
+O Rubi permite exportar os dados em três formatos diferentes.
 
 ---
 
@@ -273,7 +273,7 @@ Disponível na aba **Resumo Executivo**.
 Clique no botão **"Exportar Relatório (PDF)"**.
 Escolha onde salvar.
 O PDF gerado contém:
-- Cabeçalho com a identidade visual do Zeus (azul e dourado)
+- Cabeçalho com a identidade visual do Rubi (carmesim e grafite)
 - KPIs do período
 - Top setores, solicitantes e materiais
 - Gráficos integrados
@@ -290,7 +290,7 @@ O PDF gerado contém:
 Verifique se:
 - O arquivo Excel que você selecionou ainda existe no caminho indicado (ele não foi movido ou excluído).
 - O arquivo não está aberto no Excel ao mesmo tempo. Feche o Excel e tente novamente.
-- O arquivo é uma planilha `.xlsx` ou `.xls` — o Zeus não aceita outros formatos.
+- O arquivo é uma planilha `.xlsx` ou `.xls` — o Rubi não aceita outros formatos.
 
 ---
 
@@ -302,8 +302,8 @@ Pode ser que um filtro esteja ativo. Verifique:
 
 ---
 
-**Posso deixar o Zeus aberto e atualizar os dados sem fechar?**
-Sim. Basta clicar em **"🔄 Carregar Dados"** novamente. Se o arquivo Excel foi modificado desde o último carregamento, o Zeus vai detectar a mudança e recarregar automaticamente. Se o arquivo não mudou, a carga será instantânea usando o cache.
+**Posso deixar o Rubi aberto e atualizar os dados sem fechar?**
+Sim. Basta clicar em **"🔄 Carregar Dados"** novamente. Se o arquivo Excel foi modificado desde o último carregamento, o Rubi vai detectar a mudança e recarregar automaticamente. Se o arquivo não mudou, a carga será instantânea usando o cache.
 
 ---
 
@@ -316,4 +316,4 @@ O arquivo gerado vai conter apenas os dados daquele setor.
 ---
 
 *Manual produzido pela DBSolutions Lab — Diego Bernardes*
-*Sistema Zeus v2.3 | "O poder está nas suas mãos, Elizeus!"*
+*Sistema Rubi v2.3*

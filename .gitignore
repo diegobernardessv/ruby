@@ -15,8 +15,7 @@ env/
 # PyInstaller
 build/
 dist/
-*.spec
-ZeusApp.exe
+RubiApp.exe
 
 # IDEs
 .vscode/
@@ -43,3 +42,5 @@ config.json
 
 # Cache de dados
 .cache/
+
+hello.py

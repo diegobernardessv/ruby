@@ -65,15 +65,13 @@ Sintese clara e acionavel:
 
 ---
 
-# Projeto: ⚡ Zeus - Sistema Elizeus de Controle de Solicitações
+# Projeto: ♦ Rubi - Sistema de Controle de Solicitações
 
 **Descricao:** Sistema de analytics e controle de solicitações ao armazém com dashboards interativos, gráficos e relatórios executivos.
 
 **Branding:**
-- Ícone: ⚡ (Raio do Zeus)
-- Cores: Azul elétrico (#3498db) + Dourado (#FFD700)
-- Slogan: "O poder está nas suas mãos, Elizeus!"
-- Dedicação: Sistema desenvolvido para Elizeus (Zeus)
+- Ícone: ♦ (Losango do Rubi)
+- Cores: Carmesim (#DC143C) + Grafite (#2c3e50)
 
 **Dominio:** Gestão de Almoxarifado / Controle de Estoque
 
@@ -213,7 +211,7 @@ pyinstaller ControladorSA.spec
 - ✅ **Interface CustomTkinter** moderna e profissional
 
 ### v2.2 Exportação Avançada
-- ✅ **Exportação PDF** com branding Zeus (cabeçalho azul/dourado)
+- ✅ **Exportação PDF** com branding Rubi (cabeçalho carmesim/grafite)
 - ✅ PDF contém KPIs, top setores/solicitantes/materiais e 3 gráficos
 - ✅ Fontes Quicksand empacotadas no PDF (funciona no executável)
 

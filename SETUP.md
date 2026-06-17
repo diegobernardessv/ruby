@@ -1,6 +1,6 @@
 # Claude Agent Template — Yahiko Setup
 
-Padrão de configuração do agente Yahiko para o projeto ControladorSA (Zeus).
+Padrão de configuração do agente Yahiko para o projeto ControladorSA (Rubi).
 
 ## Estrutura
 

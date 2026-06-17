@@ -88,6 +88,15 @@ class Toast:
         return toast
 
 
+def _caminho_recurso(*partes):
+    """Resolve um caminho dentro de assets/, tanto em dev quanto no exe PyInstaller."""
+    if hasattr(sys, '_MEIPASS'):
+        base = sys._MEIPASS
+    else:
+        base = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base, 'assets', *partes)
+
+
 def _registrar_fontes():
     """Registra as fontes empacotadas via PyInstaller antes de abrir a janela."""
     # Quando empacotado pelo PyInstaller, arquivos de dados ficam em sys._MEIPASS
@@ -109,7 +118,7 @@ def _registrar_fontes():
 class SolicitacoesAppPro:
     def __init__(self, root):
         self.root = root
-        self.root.title("⚡ Zeus - Sistema de Controle de Solicitações")
+        self.root.title("♦ Rubi - Sistema de Controle de Solicitações")
         self.root.geometry("1600x900")
         self.root.configure(bg='#f0f0f0')
         
@@ -136,7 +145,7 @@ class SolicitacoesAppPro:
         self._combo_solicitante_status = None
         
         # Diretório de dados do app em %APPDATA% — funciona tanto em dev quanto no .exe
-        _app_data = os.path.join(os.environ.get('APPDATA', os.path.expanduser('~')), 'ZeusApp')
+        _app_data = os.path.join(os.environ.get('APPDATA', os.path.expanduser('~')), 'RubiApp')
         os.makedirs(_app_data, exist_ok=True)
 
         # Configurações
@@ -159,21 +168,21 @@ class SolicitacoesAppPro:
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
         # ========== CABEÇALHO ==========
-        header_frame = tk.Frame(main_frame, bg='#2c3e50', height=70)
+        header_frame = tk.Frame(main_frame, bg='#A4133C', height=70)
         header_frame.pack(fill=tk.X, pady=(0, 10))
         header_frame.pack_propagate(False)
         
         # Container centralizado para título e subtítulo lado a lado
-        header_content = tk.Frame(header_frame, bg='#2c3e50')
+        header_content = tk.Frame(header_frame, bg='#A4133C')
         header_content.place(relx=0.5, rely=0.5, anchor='center')
         
         # Título principal
         title_label = tk.Label(
             header_content,
-            text="⚡ Zeus",
+            text="♦ Rubi",
             font=('Quicksand', 28, 'bold'),
-            bg='#2c3e50',
-            fg='#FFD700'  # Dourado
+            bg='#A4133C',
+            fg='#FFFFFF'  # Branco (contraste sobre o cabeçalho vermelho)
         )
         title_label.pack(side=tk.LEFT, padx=(0, 15))
         
@@ -182,7 +191,7 @@ class SolicitacoesAppPro:
             header_content,
             text="│",
             font=('Quicksand', 24, 'bold'),
-            bg='#2c3e50',
+            bg='#A4133C',
             fg='#7f8c8d'  # Cinza
         )
         separator.pack(side=tk.LEFT, padx=(0, 15))
@@ -192,7 +201,7 @@ class SolicitacoesAppPro:
             header_content,
             text='Sistema de Controle de Solicitações',
             font=('Quicksand', 14, 'bold'),
-            bg='#2c3e50',
+            bg='#A4133C',
             fg='#ecf0f1'  # Branco suave
         )
         subtitle_label.pack(side=tk.LEFT)
@@ -233,8 +242,8 @@ class SolicitacoesAppPro:
             file_frame,
             text="Procurar...",
             command=self.selecionar_arquivo,
-            fg_color='#3498db',
-            hover_color='#2980b9',
+            fg_color='#DC143C',
+            hover_color='#A4133C',
             text_color='white',
             font=('Quicksand', 12, 'bold'),
             cursor='hand2',
@@ -273,7 +282,7 @@ class SolicitacoesAppPro:
             filter_frame,
             font=('Quicksand', 9),
             width=12,
-            background='#3498db',
+            background='#DC143C',
             foreground='white',
             borderwidth=2,
             date_pattern='dd/mm/yyyy',
@@ -286,7 +295,7 @@ class SolicitacoesAppPro:
             filter_frame,
             font=('Quicksand', 9),
             width=12,
-            background='#3498db',
+            background='#DC143C',
             foreground='white',
             borderwidth=2,
             date_pattern='dd/mm/yyyy',
@@ -318,8 +327,8 @@ class SolicitacoesAppPro:
             filter_frame,
             text="🔍 Aplicar Filtro",
             command=self.aplicar_filtro_data,
-            fg_color='#3498db',
-            hover_color='#2980b9',
+            fg_color='#DC143C',
+            hover_color='#A4133C',
             text_color='white',
             font=('Quicksand', 12, 'bold'),
             cursor='hand2',
@@ -358,21 +367,21 @@ class SolicitacoesAppPro:
         self.criar_aba_resumo()
         
         # ========== RODAPÉ ==========
-        footer_frame = tk.Frame(main_frame, bg='#2c3e50', height=40)
+        footer_frame = tk.Frame(main_frame, bg='#A4133C', height=40)
         footer_frame.pack(fill=tk.X)
         footer_frame.pack_propagate(False)
         
         tk.Label(
             footer_frame,
-            text="© 2026 DBSolutions Lab - Desenvolvido por Diego Bernardes",
+            text="♦ Rubi - Sistema de Controle de Solicitações",
             font=('Quicksand', 9),
-            bg='#2c3e50',
+            bg='#A4133C',
             fg='white'
         ).pack(pady=10)
     
     # ==================== ABA 1: DADOS ====================
     def criar_aba_dados(self):
-        self.aba_dados = tk.Frame(self.notebook, bg='#e8f4f8')  # Azul claro
+        self.aba_dados = tk.Frame(self.notebook, bg='#fdecea')  # Vermelho claro
         self.notebook.add(self.aba_dados, text='📋 Solicitações Pendentes')
         
         # Info e exportação
@@ -381,7 +390,7 @@ class SolicitacoesAppPro:
             corner_radius=12,
             border_width=2,
             fg_color='white',
-            border_color='#3498db'
+            border_color='#DC143C'
         )
         info_frame.pack(fill=tk.X, pady=(10, 10), padx=10)
         
@@ -402,7 +411,7 @@ class SolicitacoesAppPro:
             height=8,
             corner_radius=4,
             fg_color='#ecf0f1',
-            progress_color='#3498db'
+            progress_color='#DC143C'
         )
         
         # Badge de filtro ativo
@@ -435,7 +444,7 @@ class SolicitacoesAppPro:
             self.aba_dados,
             corner_radius=10,
             height=60,
-            fg_color='#2c3e50'
+            fg_color='#A4133C'
         )
         title_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
         title_frame.pack_propagate(False)
@@ -444,8 +453,8 @@ class SolicitacoesAppPro:
             title_frame,
             text="📋 Solicitações Pendentes",
             font=('Quicksand', 18, 'bold'),
-            bg='#2c3e50',
-            fg='#FFD700'
+            bg='#A4133C',
+            fg='#ECF0F1'
         ).pack(expand=True)
         
         # Campo de busca
@@ -494,7 +503,7 @@ class SolicitacoesAppPro:
             corner_radius=10,
             border_width=2,
             fg_color='white',
-            border_color='#3498db'
+            border_color='#DC143C'
         )
         filtros_frame.pack(fill=tk.X, padx=10, pady=(0, 8))
 
@@ -574,8 +583,8 @@ class SolicitacoesAppPro:
             fieldbackground='white',
             font=('Quicksand', 9)
         )
-        style.configure('Treeview.Heading', font=('Quicksand', 10, 'bold'), background='#34495e', foreground='white')
-        style.map('Treeview', background=[('selected', '#3498db')])
+        style.configure('Treeview.Heading', font=('Quicksand', 10, 'bold'), background='#A4133C', foreground='white')
+        style.map('Treeview', background=[('selected', '#DC143C')])
 
         # Persiste larguras quando o usuário redimensiona colunas (debounce 500ms)
         self.tree.bind('<ButtonRelease-1>', self._on_resize_dados)
@@ -663,7 +672,7 @@ class SolicitacoesAppPro:
             self.aba_status,
             corner_radius=10,
             height=60,
-            fg_color='#2c3e50'
+            fg_color='#A4133C'
         )
         title_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
         title_frame.pack_propagate(False)
@@ -672,8 +681,8 @@ class SolicitacoesAppPro:
             title_frame,
             text="✅ Controle de Atendimento das Solicitações",
             font=('Quicksand', 18, 'bold'),
-            bg='#2c3e50',
-            fg='#FFD700'
+            bg='#A4133C',
+            fg='#ECF0F1'
         ).pack(expand=True)
         
         # Filtro de Status de Atendimento
@@ -950,7 +959,7 @@ class SolicitacoesAppPro:
             text_frame,
             font=('Consolas', 10),
             bg='#f8f9fa',
-            fg='#2c3e50',
+            fg='#2c2c2c',
             width=84,
             yscrollcommand=scroll_resumo.set,
             wrap=tk.NONE,
@@ -970,7 +979,7 @@ class SolicitacoesAppPro:
             text="Destaques",
             font=('Quicksand', 13, 'bold'),
             bg='#fdecea',
-            fg='#2c3e50'
+            fg='#2c2c2c'
         ).pack(pady=(10, 8))
 
         # Placeholder para os cards de destaque (populados em atualizar_resumo)
@@ -1198,23 +1207,38 @@ class SolicitacoesAppPro:
                 self.root.update()
             else:
                 # Carregar do Excel (primeira vez ou arquivo modificado)
-                # Detecta automaticamente o nome da aba, pois varia entre usuários
-                _candidatos_aba = [
-                    '2-Relatório de Controle de entr',
-                    '2-Relatório de Controle de en',
-                    'Relatório de Controle de entr',
-                    'Relatório de Controle de en',
-                ]
+                # Descobre a aba de dados e a linha do cabeçalho de forma robusta.
+                # A automação passou a gerar os dados em 'Planilha1' (com linhas de
+                # parâmetro Data Inicial/Data Fim no topo); 'Controle de ...' é o local
+                # legado. Em qualquer aba, o cabeçalho real é a linha cuja primeira
+                # coluna é 'Numero SA' — tolerante a linhas de título/parâmetro no topo.
+                def _achar_header(_xls_obj, _nome):
+                    _prev = pd.read_excel(_xls_obj, sheet_name=_nome, header=None, usecols=[0], nrows=12)
+                    for _i, _v in enumerate(_prev.iloc[:, 0].astype(str).str.strip()):
+                        if _v == 'Numero SA':
+                            return _i
+                    return None
+
                 with pd.ExcelFile(arquivo) as _xls:
-                    _aba = next(
-                        (c for c in _candidatos_aba if c in _xls.sheet_names),
-                        next((s for s in _xls.sheet_names if 'Controle de' in s), None)
+                    _nomes = _xls.sheet_names
+                    # Ordem de preferência: Planilha1 -> abas 'Controle de' -> demais
+                    _ordem = (
+                        [n for n in _nomes if n.strip().lower() == 'planilha1']
+                        + [n for n in _nomes if 'controle de' in n.lower()]
+                        + [n for n in _nomes
+                           if n.strip().lower() != 'planilha1' and 'controle de' not in n.lower()]
                     )
+                    _aba, _header_idx = None, 0
+                    for _n in _ordem:
+                        _h = _achar_header(_xls, _n)
+                        if _h is not None:
+                            _aba, _header_idx = _n, _h
+                            break
                     if _aba is None:
-                        abas_disponiveis = ', '.join(_xls.sheet_names)
+                        abas_disponiveis = ', '.join(_nomes)
                         Toast.show(self.root, f"Aba de dados não encontrada. Abas no arquivo: {abas_disponiveis}", tipo='error', duration=6000)
                         return
-                df = pd.read_excel(arquivo, sheet_name=_aba)
+                df = pd.read_excel(arquivo, sheet_name=_aba, header=_header_idx)
                 self.progress_bar.set(0.2)
                 self.root.update()
 
@@ -1352,7 +1376,7 @@ class SolicitacoesAppPro:
             if cache_data is not None:
                 Toast.show(
                     self.root,
-                    f"⚡ Cache: {len(self.df_original)} registros carregados instantaneamente",
+                    f"♦ Cache: {len(self.df_original)} registros carregados instantaneamente",
                     tipo='info',
                     duration=3000
                 )
@@ -1568,7 +1592,7 @@ class SolicitacoesAppPro:
             # Atualizar badge de filtro ativo
             self.filtro_badge.config(
                 text=f"🔍 FILTRO ATIVO: {data_inicio.strftime('%d/%m/%Y')} - {data_fim.strftime('%d/%m/%Y')}",
-                bg='#3498db',
+                bg='#DC143C',
                 fg='white'
             )
             
@@ -1674,7 +1698,7 @@ class SolicitacoesAppPro:
         media_itens_sa = round(total_itens / total_sas, 2) if total_sas > 0 else 0
         
         kpis = [
-            ("📦 Total de Solicitações", total_sas, "#3498db"),
+            ("📦 Total de Solicitações", total_sas, "#DC143C"),
             ("📊 Total de Itens", total_itens, "#27ae60"),
             ("🏢 Setores Ativos", df_kpi['Setor'].nunique(), "#e67e22"),
             ("👥 Solicitantes", df_kpi['Solicitante'].nunique(), "#9b59b6"),
@@ -1799,7 +1823,7 @@ class SolicitacoesAppPro:
             self.analise_frame,
             corner_radius=10,
             height=60,
-            fg_color='#2c3e50'
+            fg_color='#A4133C'
         )
         title_frame.pack(fill=tk.X, padx=10, pady=(10, 10))
         title_frame.pack_propagate(False)
@@ -1808,8 +1832,8 @@ class SolicitacoesAppPro:
             title_frame,
             text="📈 Análise Detalhada",
             font=('Quicksand', 18, 'bold'),
-            bg='#2c3e50',
-            fg='#FFD700'
+            bg='#A4133C',
+            fg='#ECF0F1'
         ).pack(expand=True)
 
         # Gráfico: Distribuição por Dia da Semana
@@ -1962,7 +1986,7 @@ Total de SAs: {df['Numero SA'].nunique()}
 
 {'='*80}
 Relatório gerado em: {datetime.now().strftime('%d/%m/%Y às %H:%M:%S')}
-DBSolutions Lab - © 2026
+Rubi - Sistema de Controle de Solicitações
 {'='*80}
 """
         
@@ -1987,16 +2011,16 @@ DBSolutions Lab - © 2026
                      bg=cor, fg='white').pack(side=tk.RIGHT)
 
         # Período analisado
-        f_periodo = tk.Frame(self.resumo_sidebar_content, bg='#2c3e50', padx=8, pady=5)
+        f_periodo = tk.Frame(self.resumo_sidebar_content, bg='#A4133C', padx=8, pady=5)
         f_periodo.pack(fill=tk.X, pady=(0, 4))
-        row_p = tk.Frame(f_periodo, bg='#2c3e50')
+        row_p = tk.Frame(f_periodo, bg='#A4133C')
         row_p.pack(fill=tk.X)
         tk.Label(row_p, text="Período", font=('Quicksand', 8, 'bold'),
-                 bg='#2c3e50', fg='#FFD700').pack(side=tk.LEFT)
+                 bg='#A4133C', fg='#ECF0F1').pack(side=tk.LEFT)
         tk.Label(f_periodo, text=f"{data_inicio_str} → {data_fim_str}",
-                 font=('Quicksand', 8), bg='#2c3e50', fg='white').pack(anchor='w')
+                 font=('Quicksand', 8), bg='#A4133C', fg='white').pack(anchor='w')
 
-        card("Total de SAs",   f"{df['Numero SA'].nunique():,}", '#3498db')
+        card("Total de SAs",   f"{df['Numero SA'].nunique():,}", '#DC143C')
         card("Total de Itens", f"{len(df):,}",                  '#27ae60')
         card("Setores Ativos", f"{df['Setor'].nunique():,}",    '#e67e22')
         card("Solicitantes",   f"{df['Solicitante'].nunique():,}", '#9b59b6')
@@ -2006,7 +2030,7 @@ DBSolutions Lab - © 2026
         tk.Frame(self.resumo_sidebar_content, bg='#ddd', height=1).pack(fill=tk.X, pady=(6, 4))
 
         tk.Label(self.resumo_sidebar_content, text="Top 3 Setores",
-                 font=('Quicksand', 9, 'bold'), bg='#fdecea', fg='#2c3e50').pack(anchor='w', pady=(0, 2))
+                 font=('Quicksand', 9, 'bold'), bg='#fdecea', fg='#2c2c2c').pack(anchor='w', pady=(0, 2))
 
         for i, (setor, qtd) in enumerate(df['Setor'].value_counts().head(3).items(), 1):
             f = tk.Frame(self.resumo_sidebar_content, bg='white', padx=6, pady=3)
@@ -2014,14 +2038,14 @@ DBSolutions Lab - © 2026
             row = tk.Frame(f, bg='white')
             row.pack(fill=tk.X)
             tk.Label(row, text=f"{i}. {setor[:22]}", font=('Quicksand', 8, 'bold'),
-                     bg='white', fg='#2c3e50').pack(side=tk.LEFT)
+                     bg='white', fg='#2c2c2c').pack(side=tk.LEFT)
             tk.Label(row, text=f"{qtd}",  font=('Quicksand', 8),
                      bg='white', fg='#7f8c8d').pack(side=tk.RIGHT)
 
         tk.Frame(self.resumo_sidebar_content, bg='#ddd', height=1).pack(fill=tk.X, pady=(6, 4))
 
         tk.Label(self.resumo_sidebar_content, text="Top 3 Solicitantes",
-                 font=('Quicksand', 9, 'bold'), bg='#fdecea', fg='#2c3e50').pack(anchor='w', pady=(0, 2))
+                 font=('Quicksand', 9, 'bold'), bg='#fdecea', fg='#2c2c2c').pack(anchor='w', pady=(0, 2))
 
         for i, (sol, qtd) in enumerate(df['Solicitante'].value_counts().head(3).items(), 1):
             f = tk.Frame(self.resumo_sidebar_content, bg='white', padx=6, pady=3)
@@ -2029,7 +2053,7 @@ DBSolutions Lab - © 2026
             row = tk.Frame(f, bg='white')
             row.pack(fill=tk.X)
             tk.Label(row, text=f"{i}. {sol[:22]}", font=('Quicksand', 8, 'bold'),
-                     bg='white', fg='#2c3e50').pack(side=tk.LEFT)
+                     bg='white', fg='#2c2c2c').pack(side=tk.LEFT)
             tk.Label(row, text=f"{qtd} SAs", font=('Quicksand', 8),
                      bg='white', fg='#7f8c8d').pack(side=tk.RIGHT)
 
@@ -2408,7 +2432,7 @@ DBSolutions Lab - © 2026
         filename = filedialog.asksaveasfilename(
             defaultextension=".pdf",
             filetypes=[("PDF files", "*.pdf"), ("All files", "*.*")],
-            initialfile="relatorio_zeus.pdf"
+            initialfile="relatorio_rubi.pdf"
         )
         if not filename:
             return
@@ -2464,17 +2488,17 @@ DBSolutions Lab - © 2026
             # ===== PÁGINA 1: RESUMO EXECUTIVO =====
             pdf.add_page()
 
-            # Cabeçalho azul Zeus
-            pdf.set_fill_color(52, 152, 219)
+            # Cabeçalho carmesim Rubi
+            pdf.set_fill_color(220, 20, 60)
             pdf.rect(0, 0, 210, 30, 'F')
             pdf.set_xy(MARGEM, 7)
-            pdf.set_text_color(255, 215, 0)
+            pdf.set_text_color(255, 255, 255)
             pdf.set_font("Quicksand", "B", 17)
-            pdf.cell(0, 9, "ZEUS - Sistema de Controle de Solicitacoes", ln=True)
+            pdf.cell(0, 9, "RUBI - Sistema de Controle de Solicitacoes", ln=True)
             pdf.set_xy(MARGEM, 19)
-            pdf.set_text_color(210, 230, 250)
+            pdf.set_text_color(245, 230, 235)
             pdf.set_font("Quicksand", "", 9)
-            pdf.cell(0, 6, "DBSolutions Lab  |  Relatorio Executivo", ln=True)
+            pdf.cell(0, 6, "Relatorio Executivo", ln=True)
 
             pdf.set_y(37)
             pdf.set_text_color(44, 62, 80)
@@ -2487,7 +2511,7 @@ DBSolutions Lab - © 2026
             pdf.ln(5)
 
             # Linha divisória
-            pdf.set_draw_color(52, 152, 219)
+            pdf.set_draw_color(220, 20, 60)
             pdf.set_line_width(0.5)
             pdf.line(MARGEM, pdf.get_y(), MARGEM + LARGURA, pdf.get_y())
             pdf.ln(6)
@@ -2502,7 +2526,7 @@ DBSolutions Lab - © 2026
             box_y      = pdf.get_y()
             kpi_labels = ["Total de SAs", "Total de Itens", "Setores Ativos", "Solicitantes"]
             kpi_values = [f"{total_sas:,}", f"{total_itens:,}", f"{total_setores:,}", f"{total_solicit:,}"]
-            kpi_cores  = [(52, 152, 219), (46, 204, 113), (155, 89, 182), (230, 126, 34)]
+            kpi_cores  = [(220, 20, 60), (46, 204, 113), (155, 89, 182), (230, 126, 34)]
 
             for i, (label, value, cor) in enumerate(zip(kpi_labels, kpi_values, kpi_cores)):
                 x = MARGEM + i * (box_w + 2)
@@ -2573,12 +2597,12 @@ DBSolutions Lab - © 2026
                 pdf.add_page()
 
                 # Mini cabeçalho azul
-                pdf.set_fill_color(52, 152, 219)
+                pdf.set_fill_color(220, 20, 60)
                 pdf.rect(0, 0, 210, 14, 'F')
                 pdf.set_xy(MARGEM, 4)
-                pdf.set_text_color(255, 215, 0)
+                pdf.set_text_color(255, 255, 255)
                 pdf.set_font("Quicksand", "B", 11)
-                pdf.cell(0, 6, "ZEUS - Graficos Analiticos", ln=True)
+                pdf.cell(0, 6, "RUBI - Graficos Analiticos", ln=True)
 
                 pdf.set_y(21)
                 pdf.set_text_color(44, 62, 80)
@@ -2615,7 +2639,7 @@ DBSolutions Lab - © 2026
         pdf.set_text_color(150, 150, 150)
         pdf.cell(
             largura, 5,
-            f"Zeus  |  DBSolutions Lab  |  {datetime.now().strftime('%d/%m/%Y as %H:%M')}  |  Pag. {pdf.page_no()}",
+            f"Rubi  |  {datetime.now().strftime('%d/%m/%Y as %H:%M')}  |  Pag. {pdf.page_no()}",
             align='C'
         )
 
@@ -2662,7 +2686,7 @@ DBSolutions Lab - © 2026
         dias_serie = df['Data Emissao'].dt.dayofweek.map(dias_map).value_counts()
         dias_serie = dias_serie.reindex([d for d in ordem if d in dias_serie.index])
         fig, ax = plt.subplots(figsize=(10, 4))
-        ax.bar(range(len(dias_serie)), dias_serie.values, color='#3498db')
+        ax.bar(range(len(dias_serie)), dias_serie.values, color='#DC143C')
         ax.set_xticks(range(len(dias_serie)))
         ax.set_xticklabels(dias_serie.index, fontsize=10)
         ax.set_ylabel('Numero de Solicitacoes', fontsize=11)
@@ -2676,7 +2700,9 @@ if __name__ == "__main__":
     
     # Configurar tema do CustomTkinter
     ctk.set_appearance_mode("light")  # Modo claro fixo
-    ctk.set_default_color_theme("blue")  # Tema azul
+    # Tema customizado carmesim/rubi (cai para "blue" embutido se o arquivo faltar)
+    _tema = _caminho_recurso('rubi_theme.json')
+    ctk.set_default_color_theme(_tema if os.path.isfile(_tema) else "blue")
     
     root = ctk.CTk()  # Usar CTk ao invés de tk.Tk()
     app = SolicitacoesAppPro(root)
