@@ -168,7 +168,7 @@ class SolicitacoesAppPro:
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
         # ========== CABEÇALHO ==========
-        header_frame = tk.Frame(main_frame, bg='#A4133C', height=70)
+        header_frame = tk.Frame(main_frame, bg='#A4133C', height=52)
         header_frame.pack(fill=tk.X, pady=(0, 10))
         header_frame.pack_propagate(False)
         
@@ -365,20 +365,12 @@ class SolicitacoesAppPro:
         self.criar_aba_dashboard()
         self.criar_aba_analise()
         self.criar_aba_resumo()
-        
-        # ========== RODAPÉ ==========
-        footer_frame = tk.Frame(main_frame, bg='#A4133C', height=40)
-        footer_frame.pack(fill=tk.X)
-        footer_frame.pack_propagate(False)
-        
-        tk.Label(
-            footer_frame,
-            text="♦ Rubi - Sistema de Controle de Solicitações",
-            font=('Quicksand', 9),
-            bg='#A4133C',
-            fg='white'
-        ).pack(pady=10)
-    
+
+        # Faixa decorativa inferior — combina com o cabeçalho vermelho
+        faixa_inferior = tk.Frame(main_frame, bg='#A4133C', height=8)
+        faixa_inferior.pack(fill=tk.X, side=tk.BOTTOM)
+        faixa_inferior.pack_propagate(False)
+
     # ==================== ABA 1: DADOS ====================
     def criar_aba_dados(self):
         self.aba_dados = tk.Frame(self.notebook, bg='#fdecea')  # Vermelho claro
@@ -443,7 +435,7 @@ class SolicitacoesAppPro:
         title_frame = ctk.CTkFrame(
             self.aba_dados,
             corner_radius=10,
-            height=60,
+            height=38,
             fg_color='#A4133C'
         )
         title_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
@@ -452,7 +444,7 @@ class SolicitacoesAppPro:
         tk.Label(
             title_frame,
             text="📋 Solicitações Pendentes",
-            font=('Quicksand', 18, 'bold'),
+            font=('Quicksand', 14, 'bold'),
             bg='#A4133C',
             fg='#ECF0F1'
         ).pack(expand=True)
@@ -671,7 +663,7 @@ class SolicitacoesAppPro:
         title_frame = ctk.CTkFrame(
             self.aba_status,
             corner_radius=10,
-            height=60,
+            height=38,
             fg_color='#A4133C'
         )
         title_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
@@ -680,7 +672,7 @@ class SolicitacoesAppPro:
         tk.Label(
             title_frame,
             text="✅ Controle de Atendimento das Solicitações",
-            font=('Quicksand', 18, 'bold'),
+            font=('Quicksand', 14, 'bold'),
             bg='#A4133C',
             fg='#ECF0F1'
         ).pack(expand=True)
@@ -1822,7 +1814,7 @@ class SolicitacoesAppPro:
         title_frame = ctk.CTkFrame(
             self.analise_frame,
             corner_radius=10,
-            height=60,
+            height=38,
             fg_color='#A4133C'
         )
         title_frame.pack(fill=tk.X, padx=10, pady=(10, 10))
@@ -1831,7 +1823,7 @@ class SolicitacoesAppPro:
         tk.Label(
             title_frame,
             text="📈 Análise Detalhada",
-            font=('Quicksand', 18, 'bold'),
+            font=('Quicksand', 14, 'bold'),
             bg='#A4133C',
             fg='#ECF0F1'
         ).pack(expand=True)
