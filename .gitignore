@@ -43,4 +43,9 @@ config.json
 # Cache de dados
 .cache/
 
-hello.py
+# Arquivos de documentação e planejamento (não commitar)
+MANUAL_DO_USUARIO.md
+CLAUDE.md
+Roadmap.md
+GUIA_PYTHON_RUBI.md
+SETUP.md

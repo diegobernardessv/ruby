@@ -4,11 +4,25 @@
 
 **Desenvolvido por:** Diego Bernardes
 **Empresa:** DBSolutions Lab
-**Versão:** 2.1 PRO - Enhanced Edition
+**Versão:** 2.3 PRO - Filtros Avançados
 
 ---
 
 ## 🎯 O Que Há de Novo na Versão PRO
+
+### **🆕 Novidades da v2.3 - Filtros Avançados**
+
+- ✅ **Filtros de Armazém, Setor e Solicitante** nas abas Solicitações Pendentes e Status de Atendimento
+- ✅ Dropdowns preenchidos dinamicamente com os dados disponíveis
+- ✅ Combinação simultânea de múltiplos filtros + busca textual
+- ✅ Pipeline unificado de filtros — todos passam pelo mesmo fluxo
+- ✅ Colunas da tabela centralizadas (exceto Descrição e Observação)
+
+### **🆕 Novidades da v2.2 - Exportação Avançada**
+
+- ✅ **Exportação PDF** do Resumo Executivo com branding Rubi (cabeçalho carmesim/grafite)
+- ✅ PDF inclui KPIs, top setores/solicitantes/materiais e gráficos integrados
+- ✅ Fontes Quicksand empacotadas no PDF (funciona no executável)
 
 ### **🆕 Novidades da v2.1 - Enhanced Edition**
 
@@ -48,8 +62,8 @@ A versão PRO transforma a aplicação simples em um **sistema completo de analy
 
 1. **📋 Solicitações Pendentes** - Visualização e exportação de dados
 2. **✅ Status de Atendimento** - Controle de atendimento com KPIs
-3. **� Dashboard** - KPIs e gráficos principais
-4. **� Análise Detalhada** - Gráficos avançados e insights
+3. **📊 Dashboard** - KPIs e gráficos principais
+4. **📈 Análise Detalhada** - Gráficos avançados e insights
 5. **📄 Resumo Executivo** - Relatório formatado para exportação
 
 ---
@@ -73,53 +87,33 @@ A versão PRO transforma a aplicação simples em um **sistema completo de analy
 - ✅ Exportação para Excel
 - ✅ Percentuais de atendimento em tempo real
 
-### **Aba 3: � Dashboard**
+### **Aba 3: 📊 Dashboard**
 
 #### **KPIs Principais (Cards Coloridos):**
 
-- 📦 **Total de Solicitações** - Quantidade de linhas no período
-- 📊 **Total de Itens** - Soma de todas as quantidades
+- 📦 **Total de Solicitações** - Número de SAs únicas no período
+- 📊 **Total de Itens** - Número de linhas/materiais solicitados
 - 🏢 **Setores Ativos** - Número de setores únicos
 - 👥 **Solicitantes** - Número de solicitantes únicos
-- 📄 **SAs Únicas** - Número de SAs sem repetição
+- 📈 **Média Itens/SA** - Média de materiais por solicitação
 
 #### **Gráficos Interativos:**
 
-1. **📅 Solicitações por Dia**
-   - Gráfico de linha mostrando evolução temporal
-   - Identifica picos e vales de atividade
-
-2. **🏢 Top 10 Setores**
+1. **🏢 Top 10 Setores**
    - Barras horizontais ordenadas por quantidade
    - Mostra quais setores mais solicitam itens
 
-3. **👥 Top 10 Solicitantes**
+2. **👥 Top 10 Solicitantes**
    - Barras horizontais com ranking de solicitantes
    - Identifica usuários mais ativos
 
-4. **🏪 Distribuição por Armazém**
-   - Gráfico de pizza colorido
-   - Percentual de uso de cada armazém
+### **Aba 4: 📈 Análise Detalhada**
 
-### **Aba 4: � Análise Detalhada**
+#### **Gráfico:**
 
-#### **Gráficos Avançados:**
-
-1. **🎯 Top 15 Materiais Mais Solicitados**
-   - Ranking dos materiais com maior demanda
-   - Útil para gestão de estoque
-
-2. **📦 Quantidade por Setor (Top 10)**
-   - Gráfico de barras verticais
-   - Compara volume entre setores
-
-3. **📈 Evolução de Quantidade Solicitada**
-   - Linha do tempo da quantidade total por dia
-   - Identifica tendências de consumo
-
-4. **📅 Distribuição por Dia da Semana**
-   - Barras coloridas por dia (Segunda a Domingo)
-   - Identifica padrões semanais
+1. **📅 Distribuição por Dia da Semana**
+   - Barras verticais por dia (Segunda a Domingo)
+   - Identifica em que dia o almoxarifado recebe mais pedidos
 
 ### **Aba 5: 📄 Resumo Executivo**
 
@@ -154,7 +148,7 @@ A versão PRO transforma a aplicação simples em um **sistema completo de analy
 - Verde (#27ae60) - Total de Itens
 - Laranja (#e67e22) - Setores Ativos
 - Roxo (#9b59b6) - Solicitantes
-- Vermelho (#e74c3c) - SAs Únicas
+- Vermelho (#e74c3c) - Média Itens/SA
 
 ### **Cores dos Badges (Status de Atendimento):**
 
@@ -197,8 +191,9 @@ Ou com ambiente virtual:
 
 ### **5. Exportar Dados**
 
-- **Aba Dados:** Botão "💾 Exportar para Excel"
-- **Aba Resumo:** Botão "📄 Exportar Resumo (TXT)"
+- **Aba Solicitações Pendentes:** Botão "💾 Exportar para Excel"
+- **Aba Status de Atendimento:** Botão "💾 Exportar para Excel"
+- **Aba Resumo Executivo:** Botões "📄 Exportar Resumo (TXT)" e "📄 Exportar Relatório (PDF)"
 
 ---
 
@@ -214,14 +209,14 @@ Ou com ambiente virtual:
 ### **Caso 2: Análise de Setor Específico**
 
 1. Carregar dados completos
-2. Ir para Aba "Análise Detalhada"
-3. Verificar gráfico "Top Setores"
+2. Ir para a Aba "Dashboard"
+3. Verificar o gráfico "Top 10 Setores"
 4. Identificar setores com maior demanda
 
 ### **Caso 3: Planejamento de Estoque**
 
 1. Filtrar último trimestre
-2. Ver "Top Materiais Mais Solicitados"
+2. Abrir a Aba "Resumo Executivo" e ver "Top 10 Materiais"
 3. Identificar itens críticos
 4. Planejar reposição
 
@@ -242,41 +237,34 @@ Ou com ambiente virtual:
 - ✅ Qual a quantidade total de itens solicitados?
 - ✅ Quantos setores estão ativos?
 - ✅ Quem são os principais solicitantes?
-- ✅ Qual armazém é mais utilizado?
+- ✅ Quais setores mais demandam o almoxarifado?
 
 ### **Análise Detalhada:**
 
-- ✅ Quais materiais têm maior demanda?
-- ✅ Há tendência de aumento/redução de solicitações?
 - ✅ Quais dias da semana são mais movimentados?
-- ✅ Há setores com demanda desproporcional?
 
 ### **Resumo Executivo:**
 
+- ✅ Quais materiais têm maior demanda?
+- ✅ Quais os top setores e solicitantes do período?
 - ✅ Relatório completo para apresentação
 - ✅ Lista de todas as SAs do período
-- ✅ Rankings consolidados
-- ✅ Estatísticas prontas para decisão
+- ✅ Rankings consolidados e estatísticas prontas para decisão
 
 ---
 
 ## Gráficos Disponíveis
 
-### **Dashboard (4 gráficos):**
+### **Dashboard (2 gráficos):**
 
-1. Solicitações por Dia (Linha)
-2. Top 10 Setores (Barras horizontais)
-3. Top 10 Solicitantes (Barras horizontais)
-4. Distribuição por Armazém (Pizza)
+1. Top 10 Setores (Barras horizontais)
+2. Top 10 Solicitantes (Barras horizontais)
 
-### **Análise Detalhada (4 gráficos):**
+### **Análise Detalhada (1 gráfico):**
 
-1. Top 15 Materiais (Barras horizontais)
-2. Quantidade por Setor Top 10 (Barras verticais)
-3. Evolução de Quantidade (Linha)
-4. Distribuição por Dia da Semana (Barras coloridas)
+1. Distribuição por Dia da Semana (Barras verticais)
 
-**Total: 8 gráficos interativos!**
+> O Resumo Executivo em PDF inclui gráficos adicionais (top setores, solicitantes e materiais) renderizados na exportação.
 
 ---
 
@@ -305,12 +293,11 @@ Ou com ambiente virtual:
 
 ### **Ideias para Expansão:**
 
-- 📊 Exportar gráficos como imagens PNG
-- 📄 Gerar PDF com todos os gráficos
-- 🔍 Filtros adicionais (por armazém, setor, solicitante)
-- 📈 Comparação entre dois períodos
-- 🎯 Metas e alertas configuráveis
-- 📱 Versão web (Flask/Django)
+- 📊 Exportar gráficos individualmente como imagens PNG
+- 📈 Comparação entre dois períodos lado a lado
+- 🎯 Metas e alertas configuráveis por volume de SAs
+- 🗄️ Migração da fonte de dados para SQLite
+- 📱 Versão web (Flask/FastAPI)
 - 🤖 Previsão de demanda com ML
 
 ---
@@ -337,15 +324,16 @@ Ou com ambiente virtual:
 ## 📦 Arquivos da Versão PRO
 
 ```
-ControladorSA/
+Rubi/
 │
-├── interface_sa_pro.py      # Aplicação principal
-├── requirements.txt         # Dependências
-├── simecr05.xlsx           # Dados
+├── main.py                 # Aplicação principal
+├── requirements.txt        # Dependências
 ├── Rubi.spec               # Configuração PyInstaller
-├── README_PRO.md           # Este arquivo
-├── EXPLICACAO_INTERFACE.md # Documentação técnica
-├── GUIA_RAPIDO_PRO.md      # Guia rápido
+├── assets/                 # Fontes Quicksand, ícones e tema
+├── README.md               # Este arquivo
+├── MANUAL_DO_USUARIO.md    # Manual do usuário final
+├── GUIA_PYTHON_RUBI.md     # Documentação técnica didática
+├── CLAUDE.md               # Contexto para IA
 └── Roadmap.md              # Documento vivo do projeto
 ```
 
@@ -354,11 +342,13 @@ ControladorSA/
 ## 🎓 Tecnologias Utilizadas
 
 - **Python 3.8+**
-- **Tkinter** - Interface gráfica
+- **Tkinter + CustomTkinter** - Interface gráfica moderna
 - **Pandas** - Análise de dados
 - **Matplotlib** - Gráficos
 - **tkcalendar** - Seleção de datas
 - **openpyxl** - Leitura/escrita Excel
+- **fpdf2** - Exportação PDF
+- **PyInstaller** - Empacotamento do executável
 
 ---
 
@@ -388,10 +378,11 @@ Para dúvidas ou sugestões de melhorias, consulte a documentação técnica ou 
 - [x] Sistema de 5 abas especializadas
 - [x] 5 KPIs principais no Dashboard
 - [x] 3 KPIs de atendimento com badges
-- [x] 8 gráficos interativos
+- [x] 3 gráficos interativos na interface (+ gráficos no PDF)
 - [x] Filtro de datas global
-- [x] Exportação Excel (Dados + Status)
-- [x] Exportação Resumo TXT
+- [x] Filtros de Armazém, Setor e Solicitante
+- [x] Exportação Excel (Solicitações + Status)
+- [x] Exportação Resumo TXT e PDF
 - [x] Atualização automática ao filtrar
 - [x] Formatação inteligente de números
 - [x] Análise por dia da semana
@@ -420,4 +411,4 @@ Para dúvidas ou sugestões de melhorias, consulte a documentação técnica ou 
 
 ---
 
-_Última atualização: 18/04/2026 - v2.1 Enhanced Edition_
+_Última atualização: 17/06/2026 - v2.3 Filtros Avançados_
