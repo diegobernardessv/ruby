@@ -13,6 +13,26 @@ import os
 import sys
 import json
 import hashlib
+import shutil
+import unicodedata
+
+
+def _status_normalizado(serie):
+    """Normaliza uma coluna de Status para comparação robusta: sem acento,
+    maiúsculas e sem espaços nas pontas.
+
+    Necessário porque a consulta SIMEC devolve os status como 'Em Aprovacao' /
+    'Pre-Requisicao Gerada' / 'Pendente', enquanto arquivos legados usavam
+    'EM APROVAÇÃO' etc. Normalizando, a mesma lógica vale para os dois.
+    """
+    return (
+        serie.astype(str)
+        .str.normalize('NFKD')
+        .str.encode('ascii', 'ignore')
+        .str.decode('ascii')
+        .str.upper()
+        .str.strip()
+    )
 
 
 class Toast:
@@ -1070,8 +1090,11 @@ class SolicitacoesAppPro:
         if self.df_filtrado is None:
             return
 
-        status_excluir = ['EM APROVAÇÃO', 'EM APROVACAO', 'PRE-REQUISIÇÃO GERADA', 'PRE-REQUISICAO GERADA']
-        df = self.df_filtrado[~self.df_filtrado['Status'].isin(status_excluir)].copy()
+        # Esconde EM APROVAÇÃO e PRE-REQUISIÇÃO GERADA (comparação normalizada, pois
+        # a consulta SIMEC devolve 'Em Aprovacao' / 'Pre-Requisicao Gerada').
+        status_excluir = {'EM APROVACAO', 'PRE-REQUISICAO GERADA'}
+        status_norm = _status_normalizado(self.df_filtrado['Status'])
+        df = self.df_filtrado[~status_norm.isin(status_excluir)].copy()
 
         armazem     = self.filtro_armazem_var.get()
         setor       = self.filtro_setor_var.get()
@@ -1334,12 +1357,14 @@ class SolicitacoesAppPro:
                 qtd_ate   = pd.to_numeric(df_status_base['Qtd. Atendida'],         errors='coerce').fillna(0)
                 custo_tot = pd.to_numeric(df_status_base['Custo Total'],            errors='coerce').fillna(0)
                 status_col = df_status_base['Status'] if 'Status' in df_status_base.columns else pd.Series('', index=df_status_base.index)
+                # Normaliza para casar com 'Em Aprovacao' (consulta SIMEC) ou 'EM APROVAÇÃO' (legado)
+                status_norm = _status_normalizado(status_col)
 
                 df_status_base['Atendimento'] = np.select(
                     [
                         qtd_ate == qtd_sol,
                         (qtd_ate < qtd_sol) & (qtd_ate != 0),
-                        (custo_tot == 0) & (~status_col.isin(['EM APROVAÇÃO', 'EM APROVACAO'])),
+                        (custo_tot == 0) & (status_norm != 'EM APROVACAO'),
                     ],
                     [
                         'TOTALMENTE ATENDIDA',
@@ -1778,11 +1803,24 @@ class SolicitacoesAppPro:
         if not work:
             return  # toast de erro já exibido
 
-        # 2. Lê os dados da cópia atualizada (sem cache, sem virar "último arquivo")
-        #    e remove a cópia em seguida — os dados já ficam em memória.
+        # 2. Lê os dados da cópia atualizada (sem cache, sem virar "último arquivo").
         try:
             self.carregar_dados(arquivo=work, salvar_ultimo=False, usar_cache=False)
+
+            # 2b. Sincroniza o arquivo original com o resultado, para que abrir a
+            #     planilha no Excel mostre o mesmo que o app. Falha se o arquivo
+            #     estiver aberto/travado — nesse caso os dados já estão carregados.
+            try:
+                shutil.copy2(work, arquivo)
+            except Exception as e:
+                Toast.show(
+                    self.root,
+                    f"Dados carregados, mas não atualizei o arquivo original (aberto?): {str(e)[:50]}",
+                    tipo='warning',
+                    duration=5000
+                )
         finally:
+            # Remove a cópia de trabalho — os dados já estão em memória.
             try:
                 if os.path.exists(work):
                     os.remove(work)
