@@ -15,7 +15,7 @@ env/
 # PyInstaller
 build/
 dist/
-RubiApp.exe
+Rubi.exe
 
 # IDEs
 .vscode/

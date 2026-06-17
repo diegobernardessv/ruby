@@ -20,8 +20,8 @@ a = Analysis(
     runtime_hooks=[],
     excludes=[],
     noarchive=False,
+    optimize=0,
 )
-
 pyz = PYZ(a.pure)
 
 exe = EXE(
@@ -30,7 +30,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='RubiApp',
+    name='Rubi',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

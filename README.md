@@ -342,7 +342,7 @@ ControladorSA/
 ├── interface_sa_pro.py      # Aplicação principal
 ├── requirements.txt         # Dependências
 ├── simecr05.xlsx           # Dados
-├── ControladorSA.spec      # Configuração PyInstaller
+├── Rubi.spec               # Configuração PyInstaller
 ├── README_PRO.md           # Este arquivo
 ├── EXPLICACAO_INTERFACE.md # Documentação técnica
 ├── GUIA_RAPIDO_PRO.md      # Guia rápido

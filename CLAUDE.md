@@ -92,7 +92,7 @@ ControladorSA/
 ├── assets/                 # Recursos (ícones, fontes)
 ├── build/                  # Arquivos de build PyInstaller
 ├── dist/                   # Executável compilado
-├── ControladorSA.spec      # Configuração PyInstaller
+├── Rubi.spec               # Configuração PyInstaller
 ├── CLAUDE.md              # Este arquivo
 ├── Roadmap.md             # Documento vivo do projeto
 ├── README.md              # Documentação principal
@@ -168,7 +168,7 @@ python main.py
 **Compilando executável:**
 
 ```powershell
-pyinstaller ControladorSA.spec
+pyinstaller Rubi.spec
 ```
 
 ---

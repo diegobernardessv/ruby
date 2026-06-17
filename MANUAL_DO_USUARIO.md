@@ -39,7 +39,7 @@ O Rubi é o seu painel de controle do almoxarifado.
 
 ## 2. Abrindo o programa
 
-Clique duas vezes no arquivo **RubiApp.exe** (ou no atalho na área de trabalho). A janela do programa vai abrir automaticamente.
+Clique duas vezes no arquivo **Rubi.exe** (ou no atalho na área de trabalho). A janela do programa vai abrir automaticamente.
 
 Você vai ver a tela principal com:
 
