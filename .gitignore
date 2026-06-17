@@ -45,6 +45,7 @@ config.json
 
 # Arquivos de documentação e planejamento (não commitar)
 MANUAL_DO_USUARIO.md
+MANUAL_DO_USUARIO.pdf
 CLAUDE.md
 Roadmap.md
 GUIA_PYTHON_RUBI.md
