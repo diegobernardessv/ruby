@@ -1,10 +1,8 @@
-# ♦ Rubi
+# ♦ Ruby
 
 ## Sistema de Controle de Solicitações ao Armazém
 
-**Desenvolvido por:** Diego Bernardes
-**Empresa:** DBSolutions Lab
-**Versão:** 2.3 PRO - Filtros Avançados
+**Versão:** 2.3 PRO 
 
 ---
 
